@@ -7,16 +7,11 @@ export default class PieDiagram extends Component {
     return (
       <svg width="400" height="400" role="img" viewBox="0 0 400 400" style={{"pointerEvents": "all", width: "100%", height: "80%"}} >
         <VictoryPie 
-        data={[
-          {x: "Striker", y: 100},
-          {x: "Vulkan", y: 50},
-          {x: "Firebird", y: 50},
-          {x: "Another", y: 50},
-          {x: "Shitty", y: 50},
-        ]}
+        data={this.props.data}
         style={{labels: {
           fontSize: 20
         }}}
+        colorScale="qualitative"
         standalone={false}
       />
       </svg>

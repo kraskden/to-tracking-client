@@ -18,11 +18,10 @@ export default class TrackPage extends Component {
     }
 
     render() {
-        let UserComponent = (props) => this.state.user ? <UserPage user={this.state.user} /> : <div></div>
         return (
             <div className="container">
                 <NavBar onUserChange={this.onUserChange} />
-                <UserComponent />
+                <UserPage user={this.state.user} />
             </div>
         )
     }

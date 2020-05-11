@@ -2,11 +2,12 @@ import React from 'react'
 
 function PropertyTable(props) {
     let items = props.obj.map((el) => {
+        let val = el[1].toLocaleString ? el[1].toLocaleString() : el[1]
         return (
             <li key={el[0]} >
                 <div className='property-key'>{el[0]}</div>
                 <div className='property-spacer mx-1'></div>
-                <div className='property-value'>{el[1]}</div>
+                <div className='property-value'>{val}</div>
             </li>
         )
     })

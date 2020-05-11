@@ -23,12 +23,19 @@ export default class UserPage extends Component {
     }
 
     componentDidUpdate(prevProps) {
+        console.log("ComponentDidUpdate")
+        if (prevProps.user == null && this.state.isLoaded) {
+            this.setState({
+                isLoaded: false
+            })
+        }
         if (prevProps.user !== this.props.user) {
             this.updateData()
         }
     }
 
     updateData = () => {
+        console.log("Updating...")
         if (this.props.user) {
             TrackApi.getAllTrack(this.props.user).then((data) => {
                 this.setState({
@@ -63,7 +70,7 @@ export default class UserPage extends Component {
 
 
     render() {
-        if (!this.state.isLoaded) {
+        if (!this.state.isLoaded || this.props.user === null) {
             return <div></div>
         }
         if (this.state.data === null) {

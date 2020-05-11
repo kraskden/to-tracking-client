@@ -4,6 +4,7 @@ import PieDiagram from '../charts/PieDiagram'
 import LineDiagram from '../charts/LineDiagram'
 import DataContext from '../user/components/DataContext'
 import SummaryParser from './parsers/Summary'
+import PieParser from './parsers/Pie'
 
 export default class UserHome extends Component {
 
@@ -21,8 +22,6 @@ export default class UserHome extends Component {
     ]
 
     render() {
-        
-        console.log(this.context)
         let data = [];
         for (let i = 1; i < 32; ++i) {
             data.push({
@@ -30,20 +29,25 @@ export default class UserHome extends Component {
                 value: Math.round(Math.random() * 1000)
             })
         }
+        let summData = this.context.tracking[0]
+
+        let turretPieData = PieParser.decorate(PieParser.makeActivity(summData, 'Turret', 5))
+        let hullPieData = PieParser.decorate(PieParser.makeActivity(summData, 'Hull', 5))
+        let modePieData = PieParser.decorate(PieParser.makeActivity(summData, 'Mode', 5))
         return (
             <div>
                 <div className="card mt-2">
                     <div className="card-body pb-0">
-                        <SummaryTable objs={SummaryParser.makeHomeSummary(this.context)} />
+                        <SummaryTable objs={SummaryParser.makeHomeSummary(summData)} />
                         <div className="row justify-content-center">
                             <div className="col-lg-3 col-md-4">
-                                <PieDiagram />
+                                <PieDiagram data={turretPieData}/>
                             </div>
                             <div className="col-lg-3 col-md-4">
-                                <PieDiagram />
+                                <PieDiagram data={hullPieData}/>
                             </div>
                             <div className="col-lg-3 col-md-4">
-                                <PieDiagram/>
+                                <PieDiagram data={modePieData}/>
                             </div>
                         </div>               
                     </div>
