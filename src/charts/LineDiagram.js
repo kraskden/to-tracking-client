@@ -3,7 +3,6 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContai
 
 
 export default function LineDiagram(props) {
-    console.log(props.data)
     return (
     <ResponsiveContainer width='100%' height={props.height}>
         <LineChart data={props.data}>

@@ -6,7 +6,8 @@ import {
 } from "react-router-dom";
 import RegPage from './profile/RegPage';
 import LoginPage from './profile/LoginPage'
-import UserPage from './UserPage';
+import UserPage from './user/UserPage';
+import TrackPage from './user/TrackPage';
   
 
 export default class App extends Component {
@@ -16,7 +17,7 @@ export default class App extends Component {
             <Router>
                 <Switch>
                     <Route exact path="/">
-                        <UserPage />
+                        <TrackPage />
                     </Route>
                     <Route exact path="/signup">
                         <RegPage />
