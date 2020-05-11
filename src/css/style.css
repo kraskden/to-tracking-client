@@ -1,0 +1,10 @@
+.property-table li {
+    display: flex;
+    align-items: baseline;
+    color: #373737;
+}
+
+.property-spacer {
+    width: 100%;
+    border-bottom: 1px dotted #373737;
+}
