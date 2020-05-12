@@ -1,69 +1,86 @@
-import React, { Component } from 'react';
-import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-} from 'recharts';
+import React, { Component } from 'react'
+import DataContext from './components/DataContext'
+import SummaryTable from '../summary/SummaryTable'
+import SummaryParser from '../user/parsers/Summary'
+import Switch from './components/Switch'
+import BarDiagram from '../charts/BarDiagram'
+import BarParser from './parsers/Bar'
 
-const data = [
-  {
-    name: 'Page A', uv: 4000, pv: 2400, amt: 2400,
-  },
-  {
-    name: 'Page B', uv: 3000, pv: 1398, amt: 2210,
-  },
-  {
-    name: 'Page C', uv: 2000, pv: 9800, amt: 2290,
-  },
-  {
-    name: 'Page D', uv: 2780, pv: 3908, amt: 2000,
-  },
-  {
-    name: 'Page E', uv: 1890, pv: 4800, amt: 2181,
-  },
-  {
-    name: 'Page F', uv: 2390, pv: 3800, amt: 2500,
-  },
-  {
-    name: 'Page G', uv: 3490, pv: 4300, amt: 2100,
-  },
-  {
-    name: 'Page A', uv: 4000, pv: 2400, amt: 2400,
-  },
-  {
-    name: 'Page B', uv: 3000, pv: 1398, amt: 2210,
-  },
-  {
-    name: 'Page C', uv: 2000, pv: 9800, amt: 2290,
-  },
-  {
-    name: 'Page D', uv: 2780, pv: 3908, amt: 2000,
-  },
-  {
-    name: 'Page E', uv: 1890, pv: 4800, amt: 2181,
-  },
-  {
-    name: 'Page F', uv: 2390, pv: 3800, amt: 2500,
-  },
-  {
-    name: 'Page G', uv: 3490, pv: 4300, amt: 2100,
-  },
-];
+
+function BarDiagramWrapper(props) {
+    return (
+        <BarDiagram height={30 * props.data.length + 40}
+            data={props.data}
+            x='name'
+            y='time'
+        />
+    )
+}
 
 export default class UserSummary extends Component {
-  render() {
-    return (
-      <BarChart 
-        width={400} 
-        height={500} 
-        data={data} 
-        layout="vertical"
-        margin={{top: 5, right: 30, left: 20, bottom: 5}}
-      >
-        <XAxis type="number"/>
-        <YAxis type="category" dataKey="name" />
-        <CartesianGrid strokeDasharray="3 3"/>
-        <Tooltip/>
-        <Bar dataKey="pv" fill="#8884d8" />
-      </BarChart>
-    );
-  }
+
+    static contextType = DataContext
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            period: 'weekly'
+        }
+    }
+
+    onPeriodChange = (e) => {
+        this.setState({
+            period: e.target.id
+        })
+    }
+
+    render() {
+        // Be careful when change order of {'monthly', 'weekly'}
+        let tracking = this.context[this.state.period]
+        let lastTracking = tracking[tracking.length - 1] || {activities: []}
+
+        let itemActivity = {}
+        for (const item of ['Hull', 'Turret', 'Mode', 'Module']) {
+            itemActivity[item] = BarParser.parseActivity(lastTracking.activities, item)
+        }
+
+        console.log(itemActivity)
+
+        let objs = SummaryParser.makePeriodSummary(tracking[tracking.length - 1])
+        return (
+            <div>
+                <div className="pt-3">
+                    <Switch 
+                        switches={[{id: 'weekly', name: 'Last week'}, {id: 'monthly', name: 'Last month'},  {id: 'daily', name: 'Last day'}]}
+                        onChange={this.onPeriodChange}
+                    />
+                </div>
+                 <div className="card mt-2">
+                    <div className="card-body pb-0">
+                        <SummaryTable objs={objs} />
+                    </div>
+                </div>
+                <div className="card mt-2">
+                    <div className="card-body pb-0">
+                        <div className="row">
+                            <div className="col-md-6">
+                                <BarDiagramWrapper data={itemActivity['Turret']} />
+                            </div>
+                            <div className="col-md-6">
+                                <BarDiagramWrapper data={itemActivity['Hull']} />
+                            </div>
+                        </div>
+                        <div className="row mt-5">
+                            <div className="col-md-6">
+                                <BarDiagramWrapper data={itemActivity['Mode']} />
+                            </div>
+                            <div className="col-md-6">
+                                <BarDiagramWrapper data={itemActivity['Module']} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 }

@@ -8,3 +8,9 @@
     width: 100%;
     border-bottom: 1px dotted #373737;
 }
+
+.property-empty {
+    width: 100%;
+    height: 10px;
+    border-bottom: 1px #373737;
+}
