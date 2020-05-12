@@ -15,6 +15,7 @@ export default class TrackPage extends Component {
         this.setState({
             user: newUser
         })
+        window.history.pushState(newUser, "", `/user/${newUser}`)
     }
 
     render() {

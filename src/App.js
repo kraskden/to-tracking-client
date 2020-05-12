@@ -17,8 +17,9 @@ export default class App extends Component {
             <Router>
                 <Switch>
                     <Route exact path="/">
-                        <TrackPage />
+                        <TrackPage user='Fizzika'/>
                     </Route>
+                    <Route path="/user/:user" children={(props) => <TrackPage user={props.match.params.user} />} />
                     <Route exact path="/signup">
                         <RegPage />
                     </Route>

@@ -1,14 +1,14 @@
 let SummaryParser = {}
 
 SummaryParser.makeHomeSummary = (data) => {
-    data.time = data.time / 3600 // to hours
+    let time = data.time / 3600 // to hours
     let favTurret = 
         data.activities.filter((act) => act.role === "Turret").sort((a, b) => b.time - a.time)[0].name
     let favHull = 
         data.activities.filter((act) => act.role === "Hull").sort((a, b) => b.time - a.time)[0].name
     let first = [
         ["Score", data.score],
-        ["Time", Math.floor(data.time)],
+        ["Time", Math.floor(time)],
         ["Kills", data.kills],
         ["Deaths", data.deaths],
         ["Crystalls", data.cry]

@@ -10,6 +10,7 @@ export default class NavBar extends Component {
     onSubmit = (e) => {
         e.preventDefault()
         this.props.onUserChange(this.user.current.value)
+        this.user.current.value = ""
     }
 
     render() {
