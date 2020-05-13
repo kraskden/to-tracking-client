@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import AuthApi from '../net/AuthApi'
 
 export default class RegPage extends Component {
 
@@ -15,7 +16,14 @@ export default class RegPage extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault()
-        console.log(this.invite.current.value)
+        AuthApi.register(this.login.current.value, this.password.current.value,
+             this.invite.current.value).then(() => {
+                 this.props.history.push('/login')
+             }).catch(() => {
+                 this.setState({
+                     message: "Try again"
+                 })
+             })
     }
     
     render() {

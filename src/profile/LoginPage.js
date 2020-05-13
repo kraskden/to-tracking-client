@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import AuthApi from '../net/AuthApi'
 
 export default class LoginPage extends Component {
 
@@ -14,7 +15,14 @@ export default class LoginPage extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault()
-        console.log(this.login.current.value, this.password.current.value)
+        AuthApi.login(this.login.current.value, this.password.current.value).then(() => {
+            console.log("OK")
+            this.props.history.replace('/')
+        }).catch((err) => {
+            this.setState({
+                message: "Try again"
+            })
+        })
     }
     
     render() {
