@@ -7,6 +7,7 @@ export default class LogoutPage extends Component {
     constructor(props) {
         super(props)
         AuthApi.logout()
+        this.props.onProfile()
     }
 
     render() {

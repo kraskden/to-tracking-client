@@ -4,6 +4,7 @@ import UserSummary from './UserSummary'
 import TrackApi from '../net/TrackApi'
 import DataContext from './components/DataContext'
 import UserBox from './components/UserBox'
+import UserMonitoring from './UserMonitoring'
 
 
 export default class UserPage extends Component {
@@ -62,6 +63,8 @@ export default class UserPage extends Component {
                 return <UserHome />
             case "summary":
                 return <UserSummary />
+            case "monitoring":
+                return <UserMonitoring />
             default: 
                 return <div></div>
         }

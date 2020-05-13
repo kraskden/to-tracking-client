@@ -9,6 +9,19 @@ function makeFav(sortedData, role) {
     return "N/A"
 }
 
+function undefFix(arrs) {
+    for (const arr of arrs) {
+        for (const elem of arr) {
+            console.log(elem[1])
+            if (elem[1] === undefined || `${elem[1]}` === "NaN") {
+                console.log(elem[1])
+                elem[1] = "—"
+            }
+        }
+    }
+    return arrs
+}
+
 SummaryParser.makeHomeSummary = (data) => {
     let time = data.time / 3600 // to hours
     data.activities.sort((a, b) => b.time - a.time)
@@ -76,7 +89,7 @@ SummaryParser.makePeriodSummary = (data) => {
         ["Battery/Hour", (batt.count / time).toFixed()]
     ]
     
-    return [first, second]
+    return undefFix([first, second])
 }
 
 export default SummaryParser

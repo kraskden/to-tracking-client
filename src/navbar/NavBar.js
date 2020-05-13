@@ -54,25 +54,7 @@ export default class NavBar extends Component {
     constructor(props) {
         super(props)
         this.user = React.createRef()
-        this.state = {
-            profileData: null
-        }
-    }
 
-    componentDidMount() {
-       this.onUpdateUser()
-    }
-
-    onUpdateUser = () => {
-        AuthApi.getUserInfo().then((info) => {
-            this.setState({
-                profileData: info
-            })
-        }).catch(() => {
-            this.setState({
-                profileData: null
-            })
-        })
     }
 
     onSubmit = (e) => {
@@ -95,7 +77,7 @@ export default class NavBar extends Component {
                     <input className="form-control mr-sm-2" ref={this.user} type="search" placeholder="Search" aria-label="Search"/>
                     <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
-                <MakeDropdown data={this.state.profileData} />
+                <MakeDropdown data={this.props.profileData} />
             </div>
             </nav>
         )

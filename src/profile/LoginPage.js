@@ -17,6 +17,7 @@ export default class LoginPage extends Component {
         e.preventDefault()
         AuthApi.login(this.login.current.value, this.password.current.value).then(() => {
             console.log("OK")
+            this.props.onProfile()
             this.props.history.replace('/')
         }).catch((err) => {
             this.setState({

@@ -2,7 +2,7 @@ import React from 'react'
 
 function PropertyTable(props) {
     let items = props.obj.map((el, idx) => {
-        let val = el[1].toLocaleString ? el[1].toLocaleString() : el[1]
+        let val = el[1] && el[1].toLocaleString ? el[1].toLocaleString() : el[1]
         if (el[0] === "__empty") {
             return  (
                 <li key={idx} >

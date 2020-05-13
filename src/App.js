@@ -9,22 +9,47 @@ import LoginPage from './profile/LoginPage'
 import UserPage from './user/UserPage';
 import TrackPage from './user/TrackPage';
 import LogoutPage from './profile/LogoutPage';
+import AuthApi from './net/AuthApi';
   
 
 export default class App extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            profileData: null
+        }
+    }
+
+    componentDidMount() {
+        this.onProfileChange()
+    }
+
+    onProfileChange = () => {
+        AuthApi.getUserInfo().then((info) => {
+            this.setState({
+                profileData: info
+            })
+        }, (err) => {
+            this.setState({
+                profileData: null
+            })
+        })
+    }
     
     render() {
         return (
             <Router>
                 <Switch>
                     <Route exact path="/">
-                        <TrackPage user='Fizzika'/>
+                        <TrackPage user='Fizzika' profileData={this.state.profileData} onProfile={this.onProfileChange}/>
                     </Route>
-                    <Route path="/user/:user" children={(props) => <TrackPage user={props.match.params.user} />} />
+                    <Route path="/user/:user" children={(props) => 
+                        <TrackPage user={props.match.params.user} profileData={this.state.profileData} onProfile={this.onProfileChange} />} />
                     <Route exact path="/signup" children={(props) => <RegPage history={props.history} />} />
-                    <Route exact path="/login" children={(props) => <LoginPage history={props.history} />} />
+                    <Route exact path="/login" children={(props) => <LoginPage history={props.history} onProfile={this.onProfileChange}/>} />
                     <Route exact path="/logout">
-                        <LogoutPage />
+                        <LogoutPage onProfile={this.onProfileChange}/>
                     </Route>
                 </Switch>
             </Router>
