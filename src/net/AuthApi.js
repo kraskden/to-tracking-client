@@ -68,4 +68,50 @@ AuthApi.getUserInfo = async () => {
     }
 }
 
+let postSub = async (url) => {
+    let token = localStorage.getItem('RTG_JWT')
+    if (token === null) {
+        return Promise.reject()
+    }
+    let res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    if (res.status !== 200) {
+        return Promise.reject()
+    }
+    return Promise.resolve()
+}
+
+AuthApi.subTo = async (user) => {
+    return postSub(`${serverUrl}/profile/sub/${user}`)
+}
+
+AuthApi.unsubFrom = async (user) => {
+    return postSub(`${serverUrl}/profile/unsub/${user}`)
+}
+
+AuthApi.addAccount = async (login, invite) => {
+    let token = localStorage.getItem('RTG_JWT')
+    let res = await fetch(`${serverUrl}/profile/add/${login}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            login: login,
+            invite: invite
+        })
+    })
+    if (res.status !== 200 ) {
+        return Promise.reject()
+    } else {
+        return Promise.resolve()
+    }
+}
+
+
 export default AuthApi

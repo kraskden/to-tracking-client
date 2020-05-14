@@ -5,6 +5,7 @@ import TrackApi from '../net/TrackApi'
 import DataContext from './components/DataContext'
 import UserBox from './components/UserBox'
 import UserMonitoring from './UserMonitoring'
+import SubButton from './components/SubButton'
 
 
 export default class UserPage extends Component {
@@ -90,6 +91,8 @@ export default class UserPage extends Component {
                 </div>
             )
         }
+
+
         return (
             <DataContext.Provider value={this.state.data} >
                     <div className="card mt-2">
@@ -97,17 +100,24 @@ export default class UserPage extends Component {
                             <UserBox />
                         </div>
                     </div>
-                    <ul className="nav nav-tabs mt-2" id="myTab" role="tablist">
-                        <li className="nav-item">
-                            <a className="nav-link active" data-toggle="tab" role="tab" aria-selected="true" onClick={() => this.onTabChange("home")}>Home</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" data-toggle="tab" role="tab" aria-selected="false" onClick={() => this.onTabChange("summary")}>Summary</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link"  data-toggle="tab" role="tab" aria-selected="false" onClick={() => this.onTabChange("monitoring")}>Monitoring</a>
-                        </li>
-                    </ul>
+                    <div className="row align-items-center">
+                        <div className="col">
+                            <ul className="nav nav-tabs mt-2" id="myTab" role="tablist">
+                                <li className="nav-item">
+                                    <a className="nav-link active" data-toggle="tab" role="tab" aria-selected="true" onClick={() => this.onTabChange("home")}>Home</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link" data-toggle="tab" role="tab" aria-selected="false" onClick={() => this.onTabChange("summary")}>Summary</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a className="nav-link"  data-toggle="tab" role="tab" aria-selected="false" onClick={() => this.onTabChange("monitoring")}>Monitoring</a>
+                                </li>
+                          </ul>
+                        </div>
+                        <SubButton profileData={this.props.profileData} login={this.state.data.login} onProfile={this.props.onProfile}/>
+                        
+                    </div>
+                    
                     <this.ChooseComponent />
             </DataContext.Provider>
         )

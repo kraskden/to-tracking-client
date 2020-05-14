@@ -6,10 +6,11 @@ import {
 } from "react-router-dom";
 import RegPage from './profile/RegPage';
 import LoginPage from './profile/LoginPage'
-import UserPage from './user/UserPage';
 import TrackPage from './user/TrackPage';
 import LogoutPage from './profile/LogoutPage';
 import AuthApi from './net/AuthApi';
+import AdminPage from './profile/AdminPage';
+import ProfilePage from './profile/ProfilePage';
   
 
 export default class App extends Component {
@@ -51,6 +52,11 @@ export default class App extends Component {
                     <Route exact path="/logout">
                         <LogoutPage onProfile={this.onProfileChange}/>
                     </Route>
+                    <Route exact path="/admin">
+                        <AdminPage />
+                    </Route>
+                    <Route exact path="/profile" children={ (props) =>
+                        <ProfilePage profileData={this.state.profileData} history={props.history} onProfile={this.onProfileChange} />} />                        
                 </Switch>
             </Router>
 

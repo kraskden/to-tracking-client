@@ -12,9 +12,7 @@ function makeFav(sortedData, role) {
 function undefFix(arrs) {
     for (const arr of arrs) {
         for (const elem of arr) {
-            console.log(elem[1])
             if (elem[1] === undefined || `${elem[1]}` === "NaN") {
-                console.log(elem[1])
                 elem[1] = "—"
             }
         }
@@ -89,6 +87,22 @@ SummaryParser.makePeriodSummary = (data) => {
         ["Battery/Hour", (batt.count / time).toFixed()]
     ]
     
+    return undefFix([first, second])
+}
+
+SummaryParser.makeShortSummary = (data) => {
+    let time = data.time / 3600 // to hours
+
+    let first = [
+        ["Exp", data.score],
+        ["Time", time.toFixed(1)]
+    ]
+
+    let second = [
+        ["K/D", (data.kills / data.deaths).toFixed(2)],
+        ["Cry", data.cry]
+    ]
+
     return undefFix([first, second])
 }
 

@@ -8,4 +8,10 @@ TrackApi.getAllTrack = async (user) => {
     return msg
 }
 
+TrackApi.getLastTrack = async (user, period) => {
+    let res = await fetch(`${serverUrl}/user/${user}/lastTrack?period=${period}`)
+    let msg = await res.json()
+    return msg
+}
+
 export default TrackApi

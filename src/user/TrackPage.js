@@ -22,7 +22,7 @@ export default class TrackPage extends Component {
         return (
             <div className="container">
                 <NavBar onUserChange={this.onUserChange} profileData={this.props.profileData} onProfile={this.props.onProfile} />
-                <UserPage user={this.state.user} />
+                <UserPage user={this.state.user} profileData={this.props.profileData} onProfile={this.props.onProfile}/>
             </div>
         )
     }

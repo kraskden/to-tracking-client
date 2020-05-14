@@ -20,7 +20,6 @@ function DropdownItem(props) {
                     })}
                 <div className="dropdown-divider"></div>
                 <a className="dropdown-item" href="/logout">Logout</a>
-                
             </div>
             </>
         )
@@ -34,6 +33,7 @@ function DropdownItem(props) {
                     <a className="dropdown-item" href="/login">Login</a>
                     <a className="dropdown-item" href="/signup">Register</a>
                 </div>
+                
             </>
         )
     }

@@ -134,11 +134,13 @@ export default class UserBox extends Component {
     static contextType = DataContext;
 
     getRank(score) {
-        ranks.forEach((rank, idx) => {
+        console.log(score)
+        for (let idx = 0; idx < ranks.length; ++idx) {
+            let rank = ranks[idx]
             if (rank.score > score) {
                 return ranks[idx - 1].rank
             }
-        })
+        }
         return "Легенда " + (Math.floor((score - 1600000) / 200000) + 1)
     } 
 
@@ -147,12 +149,14 @@ export default class UserBox extends Component {
             return Math.floor(((score - 1600000) % 200000) / 2000)
         }
         let prev, next;
-        ranks.forEach((rank, idx) => {
+        for (let idx = 0; idx < ranks.length; ++idx) {
+            let rank = ranks[idx]
             if (rank.score > score)  {
-                prev = ranks[idx - 1].rank
-                next = rank
+                prev = ranks[idx - 1].score
+                next = rank.score
+                break;
             }
-        })
+        }
         return Math.floor((score - prev) / (next - prev) * 100)
     }
 
