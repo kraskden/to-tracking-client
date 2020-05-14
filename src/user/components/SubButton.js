@@ -3,10 +3,6 @@ import AuthApi from '../../net/AuthApi'
 
 export default class SubButton extends Component {
 
-    constructor(props) {
-        super(props)
-    }
-
     onSub = () => {
         AuthApi.subTo(this.props.login).finally(() => {
             this.props.onProfile()
@@ -22,7 +18,6 @@ export default class SubButton extends Component {
     render() {
         let subButton = <></>
         if (this.props.profileData) {
-            console.log(this.props.profileData)
             if (this.props.profileData.accounts.find((val) => val.login === this.props.login) !== undefined) {
                 return subButton
             }

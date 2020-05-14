@@ -5,7 +5,6 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContai
 export default class LineDiagram extends Component {
 
     constructor(props) {
-        console.log("Constructor")
         super(props)
         this.state = {
             data: this.transformData()
@@ -13,7 +12,6 @@ export default class LineDiagram extends Component {
     }
     
     transformData() {
-        console.log("Start transforming")
         this.data = this.props.data.slice(0)
         this.data = this.data.map((el) => {
             let ret = {}
@@ -32,8 +30,7 @@ export default class LineDiagram extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        console.log(prevProps.x, prevProps.y, this.props.x, this.props.y)
-        if (prevProps.y !== this.props.y || prevProps.x !== this.props.x || prevProps.period != this.props.period || this.props.data != prevProps.data) {
+        if (prevProps.y !== this.props.y || prevProps.x !== this.props.x || prevProps.period !== this.props.period || this.props.data !== prevProps.data) {
             this.setState({
                 data: this.transformData()
             })

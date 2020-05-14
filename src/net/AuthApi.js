@@ -42,7 +42,7 @@ AuthApi.register = async (login, password, invite) => {
             invite: invite
         })
     })
-    if (res.status == 200) {
+    if (res.status === 200) {
         return Promise.resolve()
     } else {
         return Promise.reject()

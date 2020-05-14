@@ -25,7 +25,6 @@ export default class UserPage extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        console.log("ComponentDidUpdate")
         if (prevProps.user == null && this.state.isLoaded) {
             this.setState({
                 isLoaded: false
@@ -37,7 +36,6 @@ export default class UserPage extends Component {
     }
 
     updateData = () => {
-        console.log("Updating...")
         if (this.props.user) {
             TrackApi.getAllTrack(this.props.user).then((data) => {
                 this.setState({

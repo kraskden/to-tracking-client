@@ -11,7 +11,7 @@ PieParser.makeActivity = (data, role, limit) => {
     }
     let otherTime = totalTime - activityData.reduce((acc, curr) => acc + curr.time, 0)
     let otherScore = totalScore - activityData.reduce((acc, curr) => acc + curr.score, 0)
-    if (otherTime != 0) {
+    if (otherTime !== 0) {
         activityData.push({
             name: "Others",
             score: otherScore,

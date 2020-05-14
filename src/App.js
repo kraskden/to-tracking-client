@@ -11,6 +11,7 @@ import LogoutPage from './profile/LogoutPage';
 import AuthApi from './net/AuthApi';
 import AdminPage from './profile/AdminPage';
 import ProfilePage from './profile/ProfilePage';
+import Home from './Home';
   
 
 export default class App extends Component {
@@ -42,9 +43,11 @@ export default class App extends Component {
         return (
             <Router>
                 <Switch>
-                    <Route exact path="/">
+                    <Route exact path="/" children={(props) => 
+                        <Home history={props.history} profileData={this.state.profileData} onProfile={this.onProfileChange} />} />
+                    {/* <Route exact path="/">
                         <TrackPage user='Fizzika' profileData={this.state.profileData} onProfile={this.onProfileChange}/>
-                    </Route>
+                    </Route> */}
                     <Route path="/user/:user" children={(props) => 
                         <TrackPage user={props.match.params.user} profileData={this.state.profileData} onProfile={this.onProfileChange} />} />
                     <Route exact path="/signup" children={(props) => <RegPage history={props.history} />} />

@@ -134,7 +134,6 @@ export default class UserBox extends Component {
     static contextType = DataContext;
 
     getRank(score) {
-        console.log(score)
         for (let idx = 0; idx < ranks.length; ++idx) {
             let rank = ranks[idx]
             if (rank.score > score) {

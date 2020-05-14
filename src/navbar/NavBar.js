@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import AuthApi from '../net/AuthApi'
-
 
 function DropdownItem(props) {
 

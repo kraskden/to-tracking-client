@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import LineDiagram from './LineDiagram'
 import Dropdown from './controls/Dropdown'
 
 // PROPS: 
@@ -83,7 +82,7 @@ export default class DropdownDiagram extends Component {
 
     render() {
         let btnPeriod = this.props.periods.map((el, idx) => {
-            let str = idx == 0 ? "active" : ""
+            let str = idx === 0 ? "active" : ""
             return (
                 <label className={`btn btn-secondary ${str} key=${el.id}`}>
                     <input type="radio" onClick={this.handlePeriodChange} name="options" id={el.id} checked/> {el.name ? el.name : el.id}
