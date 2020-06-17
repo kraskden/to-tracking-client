@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
+
+// pages
 import UserHome from './UserHome'
 import UserSummary from './UserSummary'
+import UserMonitoring from './UserMonitoring'
+import UserCompare from './UserCompare'
+
+// components
 import TrackApi from '../net/TrackApi'
 import DataContext from './components/DataContext'
 import UserBox from './components/UserBox'
-import UserMonitoring from './UserMonitoring'
 import SubButton from './components/SubButton'
 
 
@@ -64,6 +69,8 @@ export default class UserPage extends Component {
                 return <UserSummary />
             case "monitoring":
                 return <UserMonitoring />
+            case "compare":
+                return <UserCompare />
             default: 
                 return <div></div>
         }
@@ -109,6 +116,9 @@ export default class UserPage extends Component {
                                 </li>
                                 <li className="nav-item">
                                     <button className="nav-link"  data-toggle="tab" role="tab" aria-selected="false" onClick={() => this.onTabChange("monitoring")}>Monitoring</button>
+                                </li>
+                                <li className="nav-item">
+                                    <button className="nav-link"  data-toggle="tab" role="tab" aria-selected="false" onClick={() => this.onTabChange("compare")}>Compare</button>
                                 </li>
                           </ul>
                         </div>
