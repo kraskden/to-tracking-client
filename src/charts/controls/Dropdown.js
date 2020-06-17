@@ -47,7 +47,9 @@ export default class Dropdown extends Component {
     render() {
         let items = this.props.values.map((val) => {
             return (
-                <a class="dropdown-item" id={val.id} key={val.id} onClick={() => this.onChange(val)} href="javascript:;">{val.name}</a>
+                // Line 50:112:  Script URL is a form of eval  no-script-url
+                // eslint-disable-next-line no-script-url
+                <button class="dropdown-item" id={val.id} key={val.id} onClick={() => this.onChange(val)} href="javascript:;">{val.name}</button>
             )
         })
         return (

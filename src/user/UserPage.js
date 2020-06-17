@@ -102,13 +102,13 @@ export default class UserPage extends Component {
                         <div className="col">
                             <ul className="nav nav-tabs mt-2" id="myTab" role="tablist">
                                 <li className="nav-item">
-                                    <a className="nav-link active" data-toggle="tab" role="tab" aria-selected="true" onClick={() => this.onTabChange("home")}>Home</a>
+                                    <button className="nav-link active" data-toggle="tab" role="tab" aria-selected="true" onClick={() => this.onTabChange("home")}>Home</button>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link" data-toggle="tab" role="tab" aria-selected="false" onClick={() => this.onTabChange("summary")}>Summary</a>
+                                    <button className="nav-link" data-toggle="tab" role="tab" aria-selected="false" onClick={() => this.onTabChange("summary")}>Summary</button>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link"  data-toggle="tab" role="tab" aria-selected="false" onClick={() => this.onTabChange("monitoring")}>Monitoring</a>
+                                    <button className="nav-link"  data-toggle="tab" role="tab" aria-selected="false" onClick={() => this.onTabChange("monitoring")}>Monitoring</button>
                                 </li>
                           </ul>
                         </div>
