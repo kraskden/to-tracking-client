@@ -1,6 +1,7 @@
 import React, {
   useState,
-  useContext
+  useContext,
+  useEffect
 } from 'react';
 import TrackApi from '../net/TrackApi';
 import DoubleBarDiagram from '../charts/DoubleBarDiagram'
@@ -9,7 +10,7 @@ import DataContext from './components/DataContext'
 
 function DoubleBarDiagramWrapper(props) {
   return (
-      <DoubleBarDiagram height={30 * props.data.length + 40}
+      <DoubleBarDiagram height={30 * props.data.length + 80}
           data={props.data}
           user1={props.user1}
           user2={props.user2}
@@ -17,112 +18,118 @@ function DoubleBarDiagramWrapper(props) {
   )
 }
 
-const parseData = (data1, data2) => {
-  // const time = data.time / 3600 // to hours
-  // const dataArr = [
-  //   ["Score", data.score],
-  //   ["Time", Math.floor(time)],
-  //   ["Kills", data.kills],
-  //   ["Deaths", data.deaths],
-  //   ["Crystalls", data.cry],
-  //   ["K/D", (data.kills / data.deaths).toFixed(2)],
-  //   ["Score/Kills", (data.score / data.kills).toFixed()],
-  //   ["Cry/Score", (data.cry / data.score).toFixed(2)]
-  // ]
-
-  console.log(data1)
-  console.log(data2)
-  const user1 = data1.login
-  const user2 = data2.login
-
-  const tracking1 = data1.tracking[0]
-  const tracking2 = data2.tracking[0]
-
-  const getHours = time => Math.floor(time)
-
-  const dataArr = [
-    {
-      "name": "Score",
-      [user1]: tracking1.score,
-      [user2]: tracking2.score
-    },
-    {
-      "name": "Time",
-      [user1]: getHours(tracking1.time),
-      [user2]: getHours(tracking2.time)
-    },
-    {
-      "name": "Kills",
-      [user1]: tracking1.kills,
-      [user2]: tracking2.kills
-    },
-    {
-      "name": "Deaths",
-      [user1]: tracking1.deaths,
-      [user2]: tracking2.deaths
-    },
-    {
-      "name": "Crystals",
-      [user1]: tracking1.cry,
-      [user2]: tracking2.cry
-    },
-    // {
-    //   "name": "K/D",
-    //   user1: tracking1,
-    //   user2: tracking2
-    // },
-    // {
-    //   "name": "Score/Kills",
-    //   user1: tracking1,
-    //   user2: tracking2
-    // },
-    // {
-    //   "name": "Cry/Score",
-    //   user1: tracking1,
-    //   user2: tracking2
-    // },
-  ]
-
-  console.log(dataArr)
-  return dataArr
+function parseTime(...users) {
+  const getHours = time => Math.floor(time/60/60)
+  let entry = { "name" : "Time" }
+  users.forEach(user => {
+    entry[user.login] = getHours(user.tracking[0].time)
+  })
+  return ([entry])
 }
 
-const UserCompare = () => {
+function parseNumber(name, key, ...users) {
+  let entry = { "name": name }
+  users.forEach(user => {
+    entry[user.login] = user.tracking[0][key]
+  })
+  return([entry])
+}
+
+function parseRatio(name, dividend, divider, ...users) {
+  let entry = { "name": name }
+  users.forEach(user => {
+    const data = user.tracking[0]
+    const ratio = data[dividend] / data[divider]
+    entry[user.login] = ratio
+  })
+  return([entry])
+}
+
+
+
+
+
+export default function UserCompare() {
   const initialState = {
     data: null,
     input: '',
-    dataArr: []
+    dataArrays: []
   }
 
   const [state, setState] = useState(initialState)
 
   const context = useContext(DataContext)
 
-  const handleSubmit = event => {
+  const currUser = context.login
+  const currUserTracking = context.tracking[0]
+
+  function handleSubmit(event) {
     event.preventDefault()
-    
-    console.log(state.input)
     getData(state.input)
   }
 
-  const getData = async (user) => {
+  async function getData(user) {
     const data = await TrackApi.getAllTrack(user)
     setState(state => ({...state, data: data}))
   }
 
-  const handleChange = event => {
+  function handleChange(event) {
     const value = event.target.value
     setState(state => ({...state, input: value}))
   }
 
-  const showCurrTracking = () => {
+  function showCurrTracking() {
     if (state.data) {
-      const tracking = state.data.tracking[0]
-      console.log(tracking)
-      const dataArr = parseData(context, state.data)
-      setState(state => ({...state, dataArr: dataArr}))
+      const users = [context, state.data]
+      const testNumArr = [
+        {
+          name: "Score",
+          key: "score",
+        },
+        {
+          name: "Kills",
+          key: "kills",
+        },
+        {
+          name: "Deaths",
+          key: "deaths",
+        },
+      ]
+
+      const testRatioArr = [
+        {
+          name: "K/D",
+          dividend: "kills",
+          divider: "deaths",
+        },
+        {
+          name: "C/E",
+          dividend: "cry",
+          divider: "score",
+        },
+      ]
+
+      testNumArr.forEach(entry => {
+        console.log(
+          entry.name,
+          parseNumber(entry.name, entry.key, ...users)
+        )
+      })
+
+      testRatioArr.forEach(entry => {
+        console.log(
+          entry.name,
+          parseRatio(entry.name, entry.dividend, entry.divider, ...users)
+        )
+      })
+
+      console.log(
+        "Time",
+        parseTime(...users)
+      )
+      
     } else {
-      console.log('no data')
+      console.log("No data")
     }
   }
 
@@ -136,8 +143,6 @@ const UserCompare = () => {
     }
   }
 
-  let user1 = context.login
-  let user2 = state.data ? state.data.login : "No user"
 
   return (
     <>
@@ -155,9 +160,7 @@ const UserCompare = () => {
         ? <DoubleBarDiagramWrapper data={state.dataArr} user1={context.login} user2={state.data.login} />
         : null
       } */}
-      <DoubleBarDiagramWrapper data={state.dataArr} user1={user1} user2={user2} />
+      {/* <DoubleBarDiagramWrapper data={state.time} user1={user1} user2={user2} /> */}
     </>
   )
 }
-
-export default UserCompare;
