@@ -22,11 +22,11 @@ function createCharts({ dataArrays, users }) {
   return dataArrays.map(array => (
     <ResponsiveContainer
       width="100%"
-      height={100}
+      height={calcHeight(array.length)}
       key={array[0].name}>
       <BarChart
         width={400}
-        height={500}
+        height={100}
         data={array}
         layout="vertical"
       >
@@ -39,6 +39,8 @@ function createCharts({ dataArrays, users }) {
     </ResponsiveContainer>
   ))
 }
+
+const calcHeight = length => 50+(length*50)
 
 function createBars(users, colors) {
   return users.map(user => (
@@ -53,7 +55,7 @@ function createRandomColors(users) {
       colors[user] = randomColor()
     }
   )
-  console.log(colors)
+
   return colors
 }
 

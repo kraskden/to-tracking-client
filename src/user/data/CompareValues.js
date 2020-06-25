@@ -1,4 +1,4 @@
-const NumArr = [
+const SCGroup = [
   {
     name: "Score",
     key: "score",
@@ -7,6 +7,9 @@ const NumArr = [
     name: "Crystals",
     key: "cry"
   },
+]
+
+const KDGroup = [
   {
     name: "Kills",
     key: "kills",
@@ -14,10 +17,10 @@ const NumArr = [
   {
     name: "Deaths",
     key: "deaths",
-  },
+  }, 
 ]
 
-const RatioArr = [
+const RatioGroup = [
   {
     name: "C/E",
     dividend: "cry",
@@ -31,8 +34,9 @@ const RatioArr = [
 ]
 
 const CompareValues = {
-  NumArr,
-  RatioArr
+  SCGroup,
+  KDGroup,
+  RatioGroup
 }
 
 export default CompareValues

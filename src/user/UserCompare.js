@@ -46,23 +46,27 @@ export default function UserCompare() {
       let dataArrays = []
       const usersArray = users.map(user => user.login)
 
-
-      CompareValues.NumArr.forEach(entry => {
-        const parsedNums = CompareValuesParser.parseNumber(
+      const SCArr = CompareValues.SCGroup.map(
+        entry => CompareValuesParser.parseNumber(
           entry.name, entry.key, ...users
         )
-        dataArrays.push(parsedNums)
-      })
+      )
 
-      CompareValues.RatioArr.forEach(entry => {
-        const parsedRatios = CompareValuesParser.parseRatio(
+      const KDArr = CompareValues.KDGroup.map(
+        entry => CompareValuesParser.parseNumber(
+          entry.name, entry.key, ...users
+        )
+      )
+
+      const RatioArr = CompareValues.RatioGroup.map(
+        entry => CompareValuesParser.parseRatio(
           entry.name, entry.dividend, entry.divider, ...users
         )
-        dataArrays.push(parsedRatios)
-      })
+      )
 
       const parsedTime = CompareValuesParser.parseTime(...users)
-      dataArrays.push(parsedTime)
+
+      dataArrays.push(SCArr, KDArr, RatioArr, [parsedTime])
 
       setState(prevState => ({
         ...prevState, dataArrays: dataArrays, users: usersArray
@@ -73,12 +77,6 @@ export default function UserCompare() {
     }
   }, [context, state.data])
 
-  useEffect(() => {
-    if (state.dataArrays.length > 0 && state.users.length > 0) {
-      console.log(state.dataArrays)
-      console.log(state.users)
-    }
-  }, [state.dataArrays, state.users])
 
   return (
     <>

@@ -10,7 +10,7 @@ function parseTime(...users) {
   users.forEach(user => {
     entry[user.login] = getHours(user.tracking[0].time)
   })
-  return ([entry])
+  return (entry)
 }
 
 function parseNumber(name, key, ...users) {
@@ -18,7 +18,7 @@ function parseNumber(name, key, ...users) {
   users.forEach(user => {
     entry[user.login] = user.tracking[0][key]
   })
-  return([entry])
+  return(entry)
 }
 
 function parseRatio(name, dividend, divider, ...users) {
@@ -28,7 +28,7 @@ function parseRatio(name, dividend, divider, ...users) {
     const ratio = data[dividend] / data[divider]
     entry[user.login] = ratio
   })
-  return([entry])
+  return(entry)
 }
 
 export default CompareValuesParser
