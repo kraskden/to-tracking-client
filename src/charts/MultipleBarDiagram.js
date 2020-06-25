@@ -7,12 +7,18 @@ import {
 export default function MultipleBarDiagram(props) {
   return (
     <>
-      { createCharts(props) }
+      {
+        props.dataArrays.length > 0 && props.users.length > 0
+        ? createCharts(props)
+        : null
+      }
     </>
   )
 }
 
 function createCharts({ dataArrays, users }) {
+  const colors = createRandomColors(users)
+
   return dataArrays.map(array => (
     <ResponsiveContainer
       width="100%"
@@ -26,19 +32,29 @@ function createCharts({ dataArrays, users }) {
       >
         <XAxis type="number" />
         <YAxis dataKey="name" type="category" />
-        {/* <CartesianGrid strokeDasharray="3 3"/> */}
         <Tooltip />
         <Legend />
-        { createBars(users) }
+        { createBars(users, colors) }
       </BarChart>
     </ResponsiveContainer>
   ))
 }
 
-function createBars(users) {
+function createBars(users, colors) {
   return users.map(user => (
-    <Bar dataKey={user} fill={randomColor()} key={user} />
+    <Bar dataKey={user} fill={colors[user]} key={user} />
   ))
+}
+
+function createRandomColors(users) {
+  let colors = {}
+  users.forEach(
+    user => {
+      colors[user] = randomColor()
+    }
+  )
+  console.log(colors)
+  return colors
 }
 
 const randomColor = () => '#' + Math.floor(Math.random()*16777215).toString(16);
