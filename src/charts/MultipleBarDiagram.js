@@ -1,39 +1,51 @@
-// import React, { Component } from 'react';
-// import {
-//   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
-// } from 'recharts';
-// import { data } from 'jquery';
+import React, {
+  // useEffect,
+  // useState
+} from 'react';
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
+} from 'recharts';
 
 
-// props: {
-//   users = [
-//     { currUser: data },
-//     { user1: data },
-//     { user2: data },
-//   ]
-// }
+export default function MultipleBarDiagram(props) {
+  return (
+    <>
+      { createCharts(props) }
+    </>
+  )
+}
 
-// export default class BarDiagram extends Component {
-//   render() {
-//     return (
-//         <ResponsiveContainer width='100%' height={this.props.height}>
-//             <BarChart 
-//                 width={400} 
-//                 height={500} 
-//                 data={this.props.data} 
-//                 layout="vertical"
-//                 margin={{top: 5, right: 30, left: 20, bottom: 5}}
-//             >
-//               {/*type="number"*/}
-//                 <XAxis />
-//                 <YAxis type="category" dataKey="name" />
-//                 <CartesianGrid strokeDasharray="3 3"/>
-//                 <Tooltip/>
-//                 <Legend />
-//                 <Bar dataKey={this.props.user1} fill="#8884d8" />
-//                 <Bar dataKey={this.props.user2} fill="#82ca9d" />
-//             </BarChart>
-//         </ResponsiveContainer>
-//     );
-//   }
-// }
+function createCharts({ dataArrays, users }) {
+
+  console.log(dataArrays)
+
+  return dataArrays.map(array => (
+    <ResponsiveContainer width="100%" height={100} key={array[0].name}>
+      <BarChart
+        width={400}
+        height={500}
+        data={array}
+        layout="vertical"
+      >
+        <XAxis />
+        <YAxis
+          type="category"
+          dataKey="name"
+        />
+        {/* <CartesianGrid strokeDasharray="3 3"/> */}
+        <Tooltip />
+        <Legend />
+        { createBars(users) }
+      </BarChart>
+    </ResponsiveContainer>
+  ))
+}
+
+function createBars(users) {
+  console.log(users)
+  return users.map(user => (
+    <Bar dataKey={user} fill={randomColor()} key={user} />
+  ))
+}
+
+const randomColor = () => '#' + Math.floor(Math.random()*16777215).toString(16);
