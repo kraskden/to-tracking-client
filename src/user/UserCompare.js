@@ -4,22 +4,11 @@ import React, {
   useEffect
 } from 'react';
 import TrackApi from '../net/TrackApi';
-// import DoubleBarDiagram from '../charts/DoubleBarDiagram'
 import DataContext from './components/DataContext'
 import CompareValues from './data/CompareValues'
 import CompareValuesParser from './parsers/CompareValues'
 import MultipleBarDiagram from '../charts/MultipleBarDiagram'
 
-
-// function DoubleBarDiagramWrapper(props) {
-//   return (
-//       <DoubleBarDiagram height={30 * props.data.length + 80}
-//           data={props.data}
-//           user1={props.user1}
-//           user2={props.user2}
-//       />
-//   )
-// }
 
 
 export default function UserCompare() {
@@ -31,11 +20,7 @@ export default function UserCompare() {
   }
 
   const [state, setState] = useState(initialState)
-
   const context = useContext(DataContext)
-
-  // const currUser = context.login
-  // const currUserTracking = context.tracking[0]
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -59,7 +44,7 @@ export default function UserCompare() {
       let dataArrays = []
       const usersArray = users.map(user => user.login)
 
-      
+
       CompareValues.NumArr.forEach(entry => {
         const parsedNums = CompareValuesParser.parseNumber(
           entry.name, entry.key, ...users
