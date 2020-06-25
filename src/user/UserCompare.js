@@ -6,6 +6,8 @@ import React, {
 import TrackApi from '../net/TrackApi';
 import DoubleBarDiagram from '../charts/DoubleBarDiagram'
 import DataContext from './components/DataContext'
+import CompareValues from './data/CompareValues'
+import CompareValuesParser from './parsers/CompareValues'
 
 
 function DoubleBarDiagramWrapper(props) {
@@ -17,36 +19,6 @@ function DoubleBarDiagramWrapper(props) {
       />
   )
 }
-
-function parseTime(...users) {
-  const getHours = time => Math.floor(time/60/60)
-  let entry = { "name" : "Time" }
-  users.forEach(user => {
-    entry[user.login] = getHours(user.tracking[0].time)
-  })
-  return ([entry])
-}
-
-function parseNumber(name, key, ...users) {
-  let entry = { "name": name }
-  users.forEach(user => {
-    entry[user.login] = user.tracking[0][key]
-  })
-  return([entry])
-}
-
-function parseRatio(name, dividend, divider, ...users) {
-  let entry = { "name": name }
-  users.forEach(user => {
-    const data = user.tracking[0]
-    const ratio = data[dividend] / data[divider]
-    entry[user.login] = ratio
-  })
-  return([entry])
-}
-
-
-
 
 
 export default function UserCompare() {
@@ -60,8 +32,8 @@ export default function UserCompare() {
 
   const context = useContext(DataContext)
 
-  const currUser = context.login
-  const currUserTracking = context.tracking[0]
+  // const currUser = context.login
+  // const currUserTracking = context.tracking[0]
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -78,71 +50,43 @@ export default function UserCompare() {
     setState(state => ({...state, input: value}))
   }
 
-  function showCurrTracking() {
+  useEffect(() => {
     if (state.data) {
       const users = [context, state.data]
-      const testNumArr = [
-        {
-          name: "Score",
-          key: "score",
-        },
-        {
-          name: "Kills",
-          key: "kills",
-        },
-        {
-          name: "Deaths",
-          key: "deaths",
-        },
-      ]
 
-      const testRatioArr = [
-        {
-          name: "K/D",
-          dividend: "kills",
-          divider: "deaths",
-        },
-        {
-          name: "C/E",
-          dividend: "cry",
-          divider: "score",
-        },
-      ]
+      let dataArrays = []
 
-      testNumArr.forEach(entry => {
-        console.log(
-          entry.name,
-          parseNumber(entry.name, entry.key, ...users)
+      CompareValues.NumArr.forEach(entry => {
+        const parsedNums = CompareValuesParser.parseNumber(
+          entry.name, entry.key, ...users
         )
+        dataArrays.push(parsedNums)
       })
 
-      testRatioArr.forEach(entry => {
-        console.log(
-          entry.name,
-          parseRatio(entry.name, entry.dividend, entry.divider, ...users)
+      CompareValues.RatioArr.forEach(entry => {
+        const parsedRatios = CompareValuesParser.parseRatio(
+          entry.name, entry.dividend, entry.divider, ...users
         )
+        dataArrays.push(parsedRatios)
       })
 
-      console.log(
-        "Time",
-        parseTime(...users)
-      )
+      const parsedTime = CompareValuesParser.parseTime(...users)
+      dataArrays.push(parsedTime)
+
+      setState(prevState => ({
+        ...prevState, dataArrays: dataArrays
+      }))
       
     } else {
       console.log("No data")
     }
-  }
+  }, [context, state.data])
 
-  const showCurrContext = () => {
-    if (context) {
-      // console.log(context)
-      console.log(context.login)
-      console.log(context.tracking[0])
-    } else {
-      console.log('no data')
+  useEffect(() => {
+    if (state.dataArrays.length > 0) {
+      console.log(state.dataArrays)
     }
-  }
-
+  }, [state.dataArrays])
 
   return (
     <>
@@ -150,11 +94,10 @@ export default function UserCompare() {
         <input type="text" name="user" value={state.input} onChange={handleChange}/>
         <button type="submit" name="compare" value="compare">Compare</button>
       </form>
-      <div>
+      {/* <div> */}
         {/* diagram */}
-        <button onClick={showCurrTracking}>ShowGraph</button>
-        <button onClick={showCurrContext}>ShowContext</button>
-      </div>
+        {/* <button onClick={showCurrTracking}>ShowGraph</button>
+      </div> */}
       {/* {
         state.dataArr
         ? <DoubleBarDiagramWrapper data={state.dataArr} user1={context.login} user2={state.data.login} />

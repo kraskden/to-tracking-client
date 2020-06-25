@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
-} from 'recharts';
-import { data } from 'jquery';
+// import React, { Component } from 'react';
+// import {
+//   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
+// } from 'recharts';
+// import { data } from 'jquery';
 
 
 // props: {
