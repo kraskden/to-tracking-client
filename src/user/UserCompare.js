@@ -14,6 +14,7 @@ import MultipleBarDiagram from '../charts/MultipleBarDiagram'
 export default function UserCompare() {
   const initialState = {
     data: null,
+    isLoading: false,
     input: '',
     dataArrays: [],
     users: []
@@ -28,8 +29,9 @@ export default function UserCompare() {
   }
 
   async function getData(user) {
+    setState(state => ({...state, isLoading: true}))
     const data = await TrackApi.getAllTrack(user)
-    setState(state => ({...state, data: data}))
+    setState(state => ({...state, data: data, isLoading: false}))
   }
 
   function handleChange(event) {
@@ -84,7 +86,20 @@ export default function UserCompare() {
         <input type="text" name="user" value={state.input} onChange={handleChange}/>
         <button type="submit" name="compare" value="compare">Compare</button>
       </form>
-      <MultipleBarDiagram dataArrays={state.dataArrays} users={state.users} />
+      {
+        state.isLoading
+        ? (
+          <div class="d-flex align-items-center">
+            <strong>Loading...</strong>
+            <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+          </div>
+        ) : null
+      }
+      {
+        state.data !== null
+        ? <MultipleBarDiagram dataArrays={state.dataArrays} users={state.users} />
+        : null
+      }
     </>
   )
 }
