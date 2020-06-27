@@ -12,16 +12,18 @@ import MultipleBarDiagram from '../charts/MultipleBarDiagram'
 
 
 export default function UserCompare() {
+  const currUserData = useContext(DataContext)
+
   const initialState = {
-    usersData: null,
+    usersData: [currUserData],
     isLoading: false,
     dataArrays: [],
     users: [],
     inputList: ['']
   }
-
   const [state, setState] = useState(initialState)
-  const currUserData = useContext(DataContext)
+
+  // handlers
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -31,24 +33,9 @@ export default function UserCompare() {
     const users = state.inputList
     getDataForEach(users)
     .then(usersData => {
-      setState(state => ({...state, usersData: usersData, isLoading: false}))
+      const newUsersData = [currUserData, ...usersData]
+      setState(state => ({...state, usersData: newUsersData, isLoading: false}))
     })
-  }
-
-  async function getDataForEach(users) {
-    let data = []
-
-    for (const user of users) {
-      const userData = await getData(user)
-      data.push(userData)
-    }
-
-    return data
-  }
-
-  async function getData(user) {
-    const response = await TrackApi.getAllTrack(user)
-    return response
   }
 
   function handleInputChange(event, index) {
@@ -71,43 +58,40 @@ export default function UserCompare() {
     setState(prevState => ({...prevState, inputList: inputList}))
   }
 
+  // parse and set data for MultipleBarDiagram
+
   useEffect(() => {
-    if (state.usersData) {
-      const users = [currUserData, ...state.usersData]
+    const users = state.usersData
 
-      let dataArrays = []
-      const usersArray = users.map(user => user.login)
+    let dataArrays = []
+    const usersArray = users.map(user => user.login)
 
-      const SCArr = CompareValues.SCGroup.map(
-        entry => CompareValuesParser.parseNumber(
-          entry.name, entry.key, ...users
-        )
+    const SCArr = CompareValues.SCGroup.map(
+      entry => CompareValuesParser.parseNumber(
+        entry.name, entry.key, ...users
       )
+    )
 
-      const KDArr = CompareValues.KDGroup.map(
-        entry => CompareValuesParser.parseNumber(
-          entry.name, entry.key, ...users
-        )
+    const KDArr = CompareValues.KDGroup.map(
+      entry => CompareValuesParser.parseNumber(
+        entry.name, entry.key, ...users
       )
+    )
 
-      const RatioArr = CompareValues.RatioGroup.map(
-        entry => CompareValuesParser.parseRatio(
-          entry.name, entry.dividend, entry.divider, ...users
-        )
+    const RatioArr = CompareValues.RatioGroup.map(
+      entry => CompareValuesParser.parseRatio(
+        entry.name, entry.dividend, entry.divider, ...users
       )
+    )
 
-      const parsedTime = CompareValuesParser.parseTime(...users)
+    const parsedTime = CompareValuesParser.parseTime(...users)
 
-      dataArrays.push(SCArr, KDArr, RatioArr, [parsedTime])
+    dataArrays.push(SCArr, KDArr, RatioArr, [parsedTime])
 
-      setState(prevState => ({
-        ...prevState, dataArrays: dataArrays, users: usersArray
-      }))
-      
-    } else {
-      console.log("No data")
-    }
-  }, [currUserData, state.usersData])
+    setState(prevState => ({
+      ...prevState, dataArrays: dataArrays, users: usersArray
+    }))
+  }, [state.usersData])
 
   return (
     <div>
@@ -148,11 +132,29 @@ export default function UserCompare() {
           </div>
         ) : null
       }
-      {
-        state.usersData !== null
-        ? <MultipleBarDiagram dataArrays={state.dataArrays} users={state.users} />
-        : null
-      }
+      <MultipleBarDiagram dataArrays={state.dataArrays} users={state.users} />
     </div>
   )
+}
+
+// functions used to get data
+
+async function getDataForEach(users) {
+  let data = []
+
+  for (const user of users) {
+    const userData = await getData(user)
+    if (userData) {
+      data.push(userData)
+    }
+  }
+
+  return data
+}
+
+async function getData(user) {
+  if (user) {
+    const response = await TrackApi.getAllTrack(user)
+    return response
+  }
 }
