@@ -17,51 +17,40 @@ export default function MultipleBarDiagram(props) {
 }
 
 function createCharts({ dataArrays, users }) {
-  // const colors = createRandomColors(users)
   const colors = getSimilarColors(users)
 
-  return dataArrays.map(array => (
-    <ResponsiveContainer
-      width="100%"
-      height={calcHeight(array.length)}
-      key={array[0].name}>
-      <BarChart
-        width={400}
-        height={100}
-        data={array}
-        layout="vertical"
-        margin={{top: 5, right: 30, left: 20, bottom: 5}}
-      >
-        <XAxis type="number" />
-        <YAxis dataKey="name" type="category" />
-        <Tooltip />
-        <Legend />
-        { createBars(users, colors) }
-      </BarChart>
-    </ResponsiveContainer>
-  ))
+  return dataArrays.map(array => {
+    const height = calcHeight(array.length * users.length)
+
+    return (
+      <ResponsiveContainer
+        width="100%"
+        height={height}
+        key={array[0].name}>
+        <BarChart
+          width={400}
+          data={array}
+          layout="vertical"
+          margin={{top: 5, right: 30, left: 20, bottom: 5}}
+        >
+          <XAxis type="number" />
+          <YAxis dataKey="name" type="category" />
+          <Tooltip />
+          <Legend />
+          { createBars(users, colors) }
+        </BarChart>
+      </ResponsiveContainer>
+    )
+  })
 }
 
-const calcHeight = length => 50+(length*50)
+const calcHeight = length => ((length * 30) + 30 + 24) // + height of xaxis and legend
 
 function createBars(users, colors) {
   return users.map(user => (
     <Bar dataKey={user} fill={colors[user]} key={user} />
   ))
 }
-
-// function createRandomColors(users) {
-//   let colors = {}
-//   users.forEach(
-//     user => {
-//       colors[user] = randomColor()
-//     }
-//   )
-
-//   return colors
-// }
-
-// const randomColor = () => '#' + Math.floor(Math.random()*16777215).toString(16);
 
 function getSimilarColors(users) {
   const mainColor = '8884d8'
