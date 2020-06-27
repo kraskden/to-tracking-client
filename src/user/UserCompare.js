@@ -13,35 +13,67 @@ import MultipleBarDiagram from '../charts/MultipleBarDiagram'
 
 export default function UserCompare() {
   const initialState = {
-    data: null,
+    usersData: null,
     isLoading: false,
-    input: '',
     dataArrays: [],
-    users: []
+    users: [],
+    inputList: ['']
   }
 
   const [state, setState] = useState(initialState)
-  const context = useContext(DataContext)
+  const currUserData = useContext(DataContext)
 
   function handleSubmit(event) {
     event.preventDefault()
-    getData(state.input)
+
+    setState(state => ({...state, isLoading: true}))
+
+    const users = state.inputList
+    getDataForEach(users)
+    .then(usersData => {
+      setState(state => ({...state, usersData: usersData, isLoading: false}))
+    })
+  }
+
+  async function getDataForEach(users) {
+    let data = []
+
+    for (const user of users) {
+      const userData = await getData(user)
+      data.push(userData)
+    }
+
+    return data
   }
 
   async function getData(user) {
-    setState(state => ({...state, isLoading: true}))
-    const data = await TrackApi.getAllTrack(user)
-    setState(state => ({...state, data: data, isLoading: false}))
+    const response = await TrackApi.getAllTrack(user)
+    return response
   }
 
-  function handleChange(event) {
+  function handleInputChange(event, index) {
     const value = event.target.value
-    setState(state => ({...state, input: value}))
+    const inputList = [...state.inputList]
+    inputList[index] = value
+    setState(state => ({...state, inputList: inputList}))
+  }
+
+  function addUserInput() {
+    setState(prevState => {
+      const inputList = [...prevState.inputList, '']
+      return {...prevState, inputList: inputList}
+    })
+  }
+
+  function delUserInput(index) {
+    const inputList = state.inputList
+    inputList.splice(index, 1)
+    setState(prevState => ({...prevState, inputList: inputList}))
   }
 
   useEffect(() => {
-    if (state.data) {
-      const users = [context, state.data]
+    if (state.usersData) {
+      const users = [currUserData, ...state.usersData]
 
       let dataArrays = []
       const usersArray = users.map(user => user.login)
@@ -75,13 +107,36 @@ export default function UserCompare() {
     } else {
       console.log("No data")
     }
-  }, [context, state.data])
-
+  }, [currUserData, state.usersData])
 
   return (
-    <>
+    <div>
       <form onSubmit={handleSubmit}>
-        <input type="text" name="user" value={state.input} onChange={handleChange}/>
+        {
+          state.inputList.map((input, index) => (
+              <div key={index}>
+                <input
+                  type="text"
+                  name="user"
+                  placeholder="Enter username"
+                  value={input}
+                  onChange={event => handleInputChange(event, index)}
+                />
+                <div>
+                  {
+                    state.inputList.length > 1
+                    && <button onClick={e => delUserInput(index)}>Remove user</button>
+                  }
+                  {
+                    state.inputList.length - 1 === index
+                    && state.inputList.length < 4
+                    && <button onClick={addUserInput}>Add user</button>
+                  }
+                </div>
+              </div>
+            )
+          )
+        }
         <button type="submit" name="compare" value="compare">Compare</button>
       </form>
       {
@@ -94,10 +149,10 @@ export default function UserCompare() {
         ) : null
       }
       {
-        state.data !== null
+        state.usersData !== null
         ? <MultipleBarDiagram dataArrays={state.dataArrays} users={state.users} />
         : null
       }
-    </>
+    </div>
   )
 }
