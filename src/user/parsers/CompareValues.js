@@ -1,34 +1,50 @@
-const CompareValuesParser = {
-  parseTime,
-  parseNumber,
-  parseRatio
-}
+let CompareValuesParser = {}
 
-function parseTime(...users) {
+
+CompareValuesParser.parseTime = function(...users) {
   const getHours = time => Math.floor(time/60/60)
-  let entry = { "name" : "Time" }
+  let data = []
+
   users.forEach(user => {
-    entry[user.login] = getHours(user.tracking[0].time)
+    const entry = {
+      name: user.login,
+      Time: getHours(user.tracking[0].time)
+    }
+    data.push(entry)
   })
-  return (entry)
+  return (data)
 }
 
-function parseNumber(name, key, ...users) {
-  let entry = { "name": name }
+CompareValuesParser.parseNumber = function(name, key, ...users) {
+  let data = []
+
   users.forEach(user => {
-    entry[user.login] = user.tracking[0][key]
+      const number = user.tracking[0][key]
+
+      const entry = {
+        name: user.login,
+        [name]: number
+      }
+      data.push(entry)
   })
-  return(entry)
+  return(data)
 }
 
-function parseRatio(name, dividend, divider, ...users) {
-  let entry = { "name": name }
+CompareValuesParser.parseRatio = function(name, dividend, divider, ...users) {
+  let data = []
+  
   users.forEach(user => {
-    const data = user.tracking[0]
-    const ratio = data[dividend] / data[divider]
-    entry[user.login] = ratio
+    const tracking = user.tracking[0]
+    const ratio = tracking[dividend] / tracking[divider]
+
+    const entry = {
+      name: user.login,
+      [name]: ratio
+    }
+    data.push(entry)
   })
-  return(entry)
+  return(data)
 }
+
 
 export default CompareValuesParser

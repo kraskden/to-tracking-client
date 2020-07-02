@@ -17,8 +17,7 @@ export default function UserCompare() {
   const initialState = {
     usersData: [currUserData],
     isLoading: false,
-    dataArrays: [],
-    users: [],
+    barData: null,
     inputList: ['']
   }
   const [state, setState] = useState(initialState)
@@ -63,33 +62,41 @@ export default function UserCompare() {
   useEffect(() => {
     const users = state.usersData
 
-    let dataArrays = []
-    const usersArray = users.map(user => user.login)
+    let barData = []
 
-    const SCArr = CompareValues.SCGroup.map(
-      entry => CompareValuesParser.parseNumber(
-        entry.name, entry.key, ...users
-      )
+
+    CompareValues.SCGroup.forEach(
+      entry => {
+        const dataArray = CompareValuesParser.parseNumber(
+          entry.name, entry.key, ...users
+        )
+        barData.push([entry.name, dataArray])
+      }
     )
 
-    const KDArr = CompareValues.KDGroup.map(
-      entry => CompareValuesParser.parseNumber(
-        entry.name, entry.key, ...users
-      )
+    CompareValues.KDGroup.forEach(
+      entry => {
+        const dataArray = CompareValuesParser.parseNumber(
+          entry.name, entry.key, ...users
+        )
+        barData.push([entry.name, dataArray])
+      }
     )
 
-    const RatioArr = CompareValues.RatioGroup.map(
-      entry => CompareValuesParser.parseRatio(
-        entry.name, entry.dividend, entry.divider, ...users
-      )
+    CompareValues.RatioGroup.forEach(
+      entry => {
+        const dataArray = CompareValuesParser.parseRatio(
+          entry.name, entry.dividend, entry.divider, ...users
+        )
+        barData.push([entry.name, dataArray])
+      }
     )
 
     const parsedTime = CompareValuesParser.parseTime(...users)
-
-    dataArrays.push(SCArr, KDArr, RatioArr, [parsedTime])
+    barData.push(["Time", parsedTime])
 
     setState(prevState => ({
-      ...prevState, dataArrays: dataArrays, users: usersArray
+      ...prevState, barData: barData
     }))
   }, [state.usersData])
 
@@ -132,7 +139,10 @@ export default function UserCompare() {
           </div>
         ) : null
       }
-      <MultipleBarDiagram dataArrays={state.dataArrays} users={state.users} />
+      <MultipleBarDiagram
+        barData={state.barData}
+        currentUser={currUserData.login}
+      />
     </div>
   )
 }

@@ -1,4 +1,6 @@
-const SCGroup = [
+let CompareValues = {}
+
+CompareValues.SCGroup = [
   {
     name: "Score",
     key: "score",
@@ -9,7 +11,7 @@ const SCGroup = [
   },
 ]
 
-const KDGroup = [
+CompareValues.KDGroup = [
   {
     name: "Kills",
     key: "kills",
@@ -20,7 +22,7 @@ const KDGroup = [
   }, 
 ]
 
-const RatioGroup = [
+CompareValues.RatioGroup = [
   {
     name: "C/E",
     dividend: "cry",
@@ -32,11 +34,5 @@ const RatioGroup = [
     divider: "deaths",
   },
 ]
-
-const CompareValues = {
-  SCGroup,
-  KDGroup,
-  RatioGroup
-}
 
 export default CompareValues
