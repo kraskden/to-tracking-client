@@ -14,56 +14,71 @@ import MultipleBarDiagram from '../charts/MultipleBarDiagram'
 export default function UserCompare() {
   const currUserData = useContext(DataContext)
 
-  const initialState = {
-    usersData: [currUserData],
-    isLoading: false,
-    barData: null,
-    inputList: ['']
+  // states
+
+  const initialUsersDataState = {
+    data: [currUserData],
+    isLoading: false, 
   }
-  const [state, setState] = useState(initialState)
+
+  const initialBarState = null
+
+  const initialInputState = ''
+
+  const [usersData, setUsersData] = useState(initialUsersDataState)
+  const [barData, setBarData] = useState(initialBarState)
+  const [input, setInput] = useState(initialInputState)
 
   // handlers
 
-  function handleSubmit(event) {
+  function onSubmit(event) {
+    /*
+    set userData
+    */
     event.preventDefault()
 
-    setState(state => ({...state, isLoading: true}))
+    if (input.trim()) {
+      setUsersData(oldState => ({...oldState, isLoading: true}))
 
-    const users = state.inputList
-    getDataForEach(users)
-    .then(usersData => {
-      const newUsersData = [currUserData, ...usersData]
-      setState(state => ({...state, usersData: newUsersData, isLoading: false}))
-    })
+      const user = input
+
+      getData(user)
+      .then(data => {
+        addUser(data)
+      })
+
+      setInput('')
+    }
   }
 
-  function handleInputChange(event, index) {
+  function onChange(event) {
     const value = event.target.value
-    const inputList = [...state.inputList]
-    inputList[index] = value
-    setState(state => ({...state, inputList: inputList}))
+    setInput(value)
   }
 
-  function addUserInput() {
-    setState(prevState => {
-      const inputList = [...prevState.inputList, '']
-      return {...prevState, inputList: inputList}
-    })
+  function addUser(userData) {
+    const newData = [...usersData.data, userData]
+    setUsersData(oldState => ({...oldState, data: newData, isLoading: false}))
   }
 
-  function delUserInput(index) {
-    const inputList = state.inputList
-    inputList.splice(index, 1)
-    setState(prevState => ({...prevState, inputList: inputList}))
+  function delUser(index) {
+    const data = usersData.data
+    data.splice(index, 1)
+    setUsersData(prevState => ({...prevState, data: data}))
   }
 
   // parse and set data for MultipleBarDiagram
 
   useEffect(() => {
-    const users = state.usersData
+
+    const users = usersData.data
+    console.log(users)
 
     let barData = []
 
+    /*
+    parse data for bar diagram
+    */
 
     CompareValues.SCGroup.forEach(
       entry => {
@@ -95,43 +110,50 @@ export default function UserCompare() {
     const parsedTime = CompareValuesParser.parseTime(...users)
     barData.push(["Time", parsedTime])
 
-    setState(prevState => ({
-      ...prevState, barData: barData
-    }))
-  }, [state.usersData])
+
+    /*
+    set barData
+    */
+
+    setBarData(barData)
+
+    // stringify to catch all changes in complex data structures
+    // eslint-disable-next-line
+  }, [JSON.stringify(usersData.data)])
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <ul>
         {
-          state.inputList.map((input, index) => (
-              <div key={index}>
-                <input
-                  type="text"
-                  name="user"
-                  placeholder="Enter username"
-                  value={input}
-                  onChange={event => handleInputChange(event, index)}
-                />
-                <div>
-                  {
-                    state.inputList.length > 1
-                    && <button onClick={e => delUserInput(index)}>Remove user</button>
-                  }
-                  {
-                    state.inputList.length - 1 === index
-                    && state.inputList.length < 4
-                    && <button onClick={addUserInput}>Add user</button>
-                  }
-                </div>
-              </div>
-            )
-          )
+          usersData.data.map((user, index) => (
+            <li key={index}>
+              <span>{user.login}</span>
+              <button onClick={e => delUser(index)}>&times;</button>
+            </li>
+          ))
         }
-        <button type="submit" name="compare" value="compare">Compare</button>
+      </ul>
+      <form onSubmit={onSubmit}>
+        <div>
+          <input
+            type="text"
+            name="user"
+            placeholder="Username"
+            value={input}
+            onChange={onChange}
+
+          />
+          <button
+            type="submit"
+            name="compare"
+            value="compare"
+          >
+            Add user
+          </button>
+        </div>
       </form>
       {
-        state.isLoading
+        usersData.isLoading
         ? (
           <div class="d-flex align-items-center">
             <strong>Loading...</strong>
@@ -140,7 +162,7 @@ export default function UserCompare() {
         ) : null
       }
       <MultipleBarDiagram
-        barData={state.barData}
+        barData={barData}
         currentUser={currUserData.login}
       />
     </div>
@@ -148,19 +170,6 @@ export default function UserCompare() {
 }
 
 // functions used to get data
-
-async function getDataForEach(users) {
-  let data = []
-
-  for (const user of users) {
-    const userData = await getData(user)
-    if (userData) {
-      data.push(userData)
-    }
-  }
-
-  return data
-}
 
 async function getData(user) {
   if (user) {
