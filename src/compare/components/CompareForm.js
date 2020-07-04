@@ -17,7 +17,7 @@ export default function CompareForm(props) {
     if (input.trim()) {
       setUsersData(oldState => ({...oldState, isLoading: true}))
 
-      const user = input
+      const user = input.trim()
 
       if (user) {
         TrackApi.getAllTrack(user)
