@@ -5,8 +5,8 @@ import React, {
 } from 'react';
 import TrackApi from '../net/TrackApi';
 import DataContext from './components/DataContext'
-import CompareValues from './data/CompareValues'
-import CompareValuesParser from './parsers/CompareValues'
+import CompareValuesData from './data/CompareValuesData'
+import CompareValuesParser from './parsers/CompareValuesParser'
 import MultipleBarDiagram from '../charts/MultipleBarDiagram'
 
 
@@ -80,7 +80,7 @@ export default function UserCompare() {
     parse data for bar diagram
     */
 
-    CompareValues.SCGroup.forEach(
+    CompareValuesData.SCGroup.forEach(
       entry => {
         const dataArray = CompareValuesParser.parseNumber(
           entry.name, entry.key, ...users
@@ -89,7 +89,7 @@ export default function UserCompare() {
       }
     )
 
-    CompareValues.KDGroup.forEach(
+    CompareValuesData.KDGroup.forEach(
       entry => {
         const dataArray = CompareValuesParser.parseNumber(
           entry.name, entry.key, ...users
@@ -98,7 +98,7 @@ export default function UserCompare() {
       }
     )
 
-    CompareValues.RatioGroup.forEach(
+    CompareValuesData.RatioGroup.forEach(
       entry => {
         const dataArray = CompareValuesParser.parseRatio(
           entry.name, entry.dividend, entry.divider, ...users
