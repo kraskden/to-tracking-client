@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import UserHome from './UserHome'
 import UserSummary from './UserSummary'
 import UserMonitoring from './UserMonitoring'
-import UserCompare from './UserCompare'
+import Compare from '../compare/Compare'
 
 // components
 import TrackApi from '../net/TrackApi'
@@ -70,7 +70,7 @@ export default class UserPage extends Component {
             case "monitoring":
                 return <UserMonitoring />
             case "compare":
-                return <UserCompare />
+                return <Compare />
             default: 
                 return <div></div>
         }

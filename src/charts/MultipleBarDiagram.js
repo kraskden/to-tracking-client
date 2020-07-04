@@ -15,16 +15,16 @@ export default function MultipleBarDiagram(props) {
   return (
     <>
       {
-        props.barData !== null
-        ? <Charts barData={props.barData} currentUser={props.currentUser} />
+        props.diagramData !== null
+        ? <Charts diagramData={props.diagramData} currentUser={props.currentUser} />
         : null
       }
     </>
   )
 }
 
-function Charts({barData, currentUser}) {
-  return barData.map(([dataKey, data], index) => {
+function Charts({diagramData}) {
+  return diagramData.map(([dataKey, data], index) => {
     const height = calcHeight(data.length)
     const sorted = [...data].sort((first, second) => {
       if (first[dataKey] < second[dataKey]) {
