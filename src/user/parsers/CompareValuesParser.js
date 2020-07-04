@@ -1,5 +1,5 @@
 export default {
-  parseTime(...users) {
+  parseTime(users) {
     const getHours = time => Math.floor(time / 60 / 60)
     let data = []
   
@@ -13,7 +13,7 @@ export default {
     return (data)
   },
 
-  parseNumber(name, key, ...users) {
+  parseNumber(name, key, users) {
     let data = []
   
     users.forEach(user => {
@@ -28,7 +28,7 @@ export default {
     return(data)
   },
 
-  parseRatio(name, dividend, divider, ...users) {
+  parseRatio(name, dividend, divider, users) {
     let data = []
     
     users.forEach(user => {

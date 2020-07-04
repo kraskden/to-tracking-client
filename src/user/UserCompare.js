@@ -83,7 +83,7 @@ export default function UserCompare() {
     CompareValuesData.SCGroup.forEach(
       entry => {
         const dataArray = CompareValuesParser.parseNumber(
-          entry.name, entry.key, ...users
+          entry.name, entry.key, users
         )
         barData.push([entry.name, dataArray])
       }
@@ -92,7 +92,7 @@ export default function UserCompare() {
     CompareValuesData.KDGroup.forEach(
       entry => {
         const dataArray = CompareValuesParser.parseNumber(
-          entry.name, entry.key, ...users
+          entry.name, entry.key, users
         )
         barData.push([entry.name, dataArray])
       }
@@ -101,13 +101,13 @@ export default function UserCompare() {
     CompareValuesData.RatioGroup.forEach(
       entry => {
         const dataArray = CompareValuesParser.parseRatio(
-          entry.name, entry.dividend, entry.divider, ...users
+          entry.name, entry.dividend, entry.divider, users
         )
         barData.push([entry.name, dataArray])
       }
     )
 
-    const parsedTime = CompareValuesParser.parseTime(...users)
+    const parsedTime = CompareValuesParser.parseTime(users)
     barData.push(["Time", parsedTime])
 
 
