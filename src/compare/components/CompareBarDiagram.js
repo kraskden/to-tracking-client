@@ -67,7 +67,7 @@ export default function CompareBarDiagram({usersData}) {
     update selected data if usersData changed
     */
 
-    if (selected) {
+    if (selected && users.length > 0) {
       const value = selected[0][0]
       setSelected(diagramData.filter(data => data[0] === value))
     }
