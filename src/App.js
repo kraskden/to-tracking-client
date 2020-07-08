@@ -48,8 +48,11 @@ export default class App extends Component {
                     {/* <Route exact path="/">
                         <TrackPage user='Fizzika' profileData={this.state.profileData} onProfile={this.onProfileChange}/>
                     </Route> */}
-                    <Route path="/user/:user" children={(props) => 
-                        <TrackPage user={props.match.params.user} profileData={this.state.profileData} onProfile={this.onProfileChange} />} />
+                    <Route path="/user/:user" children={(props) => {
+                        console.log(props.match.params.user)
+                        return <TrackPage user={props.match.params.user} profileData={this.state.profileData} onProfile={this.onProfileChange} />}
+                    } />
+                        
                     <Route exact path="/signup" children={(props) => <RegPage history={props.history} />} />
                     <Route exact path="/login" children={(props) => <LoginPage history={props.history} onProfile={this.onProfileChange}/>} />
                     <Route exact path="/logout">

@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import { Delete } from 'react-feather'
+import { Link } from 'react-router-dom'
 
 export default function UserList({users, delCallback}) {
   return (
@@ -12,7 +13,8 @@ export default function UserList({users, delCallback}) {
               key={index}
               className="list-group-item d-flex justify-content-between"
             >
-              <span>{user.login}</span>
+              {/* <span>{user.login}</span> */}
+              <Link to={`/user/${user.login}`}>{user.login}</Link>
               <span
                 onClick={e => delCallback(index)}
                 className="span-hover"

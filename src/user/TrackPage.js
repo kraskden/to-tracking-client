@@ -11,6 +11,14 @@ export default class TrackPage extends Component {
         }
     }
 
+    componentDidUpdate(props) {
+        if (this.props.user !== props.user) {
+            this.setState({
+                user: this.props.user
+            })
+        } 
+    }
+
     onUserChange = (newUser) => {
         this.setState({
             user: newUser
