@@ -83,15 +83,22 @@ export default function CompareBarDiagram({usersData}) {
 
   return (
     diagramData
-    ? (<>
-        <Dropdown
-          values={diagramData.map(entry => ({id: entry[0], name: entry[0]}))}
-          onChange={onChange}
-        />
-        <MultipleBarDiagram
-          diagramData={selected}
-        />
-      </>)
-    : <div>No users selected</div>
+    ? (<div className="container">
+        <div className="row">
+          <h4 className="col-6 col-md-2">Chart</h4>
+          <Dropdown
+            values={diagramData.map(entry => ({id: entry[0], name: entry[0]}))}
+            onChange={onChange}
+            className="col-6 col-md-10"
+          />
+        </div>
+        <div className="row mt-3">
+          <MultipleBarDiagram
+            diagramData={selected}
+            className="col"
+          />
+        </div>
+      </div>)
+    : <div>No selected users</div>
   )
 }

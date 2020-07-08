@@ -14,3 +14,7 @@
     height: 10px;
     border-bottom: 1px #373737;
 }
+
+.span-hover:hover {
+    cursor: pointer;
+}

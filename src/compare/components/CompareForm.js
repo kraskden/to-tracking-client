@@ -19,17 +19,15 @@ export default function CompareForm(props) {
 
       const user = input.trim()
 
-      if (user) {
-        TrackApi.getAllTrack(user)
-        .then(data => {
-          if (data) {
-            addUser(data)
-          } else {
-            console.log('no such user')
-            setUsersData(oldState => ({...oldState, isLoading: false}))
-          }
-        })
-      }
+      TrackApi.getAllTrack(user)
+      .then(data => {
+        if (data) {
+          addUser(data)
+        } else {
+          console.log('no such user')
+          setUsersData(oldState => ({...oldState, isLoading: false}))
+        }
+      })
 
       setInput('')
     }
@@ -41,23 +39,31 @@ export default function CompareForm(props) {
   }
 
   return (
-    <form onSubmit={onSubmit}>
-      <div>
+    <form
+      onSubmit={onSubmit}
+      className="mb-3 mt-3"
+    >
+      <div className="input-group mb-3 mt-3">
         <input
           type="text"
           name="user"
           placeholder="Username"
           value={input}
           onChange={onChange}
-
+          className="form-control"
+          aria-describedby="button-addon"
         />
-        <button
-          type="submit"
-          name="compare"
-          value="compare"
-        >
-          Add user
-        </button>
+        <div className="input-group-append">
+          <button
+            type="submit"
+            name="compare"
+            value="compare"
+            className="btn btn-outline-secondary"
+            id="button-addon"
+          >
+            Add user
+          </button>
+        </div>
       </div>
     </form>
   )

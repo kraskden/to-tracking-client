@@ -38,16 +38,18 @@ function Charts({diagramData}) {
 
     return (
       <Fragment>
-        <h4>{dataKey}</h4>
+        {/* <h4>{dataKey}</h4> */}
         <ResponsiveContainer
           width="100%"
           height={height}
-          key={index}>
+          key={index}
+          // className="card p-3"  
+        >
           <BarChart
-            width={400}
+            // width={400}
             data={sorted}
             layout="vertical"
-            margin={{top: 5, right: 30, left: 20, bottom: 5}}
+            margin={{top: 5, right: 70, left: 70, bottom: 5}}
           >
             <XAxis type="number" />
             <YAxis dataKey="name" type="category" />

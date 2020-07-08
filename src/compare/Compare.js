@@ -5,6 +5,7 @@ import React, {
 import DataContext from '../user/components/DataContext'
 import CompareForm from './components/CompareForm'
 import CompareBarDiagram from './components/CompareBarDiagram'
+import UserList from './components/UserList'
 
 
 
@@ -19,7 +20,7 @@ export default function UserCompare() {
 
   function addUser(userData) {
     const newData = [...usersData.data, userData]
-    setUsersData(oldState => ({...oldState, data: newData, isLoading: false}))
+    setUsersData(prevState => ({...prevState, data: newData, isLoading: false}))
   }
 
   function delUser(index) {
@@ -30,34 +31,34 @@ export default function UserCompare() {
 
   return (
     <div>
-      <ul>
-        {
-          usersData.data.map((user, index) => (
-            <li key={index}>
-              <span>{user.login}</span>
-              <button onClick={e => delUser(index)}>&times;</button>
-            </li>
-          ))
-        }
-      </ul>
       <CompareForm
         callbacks={{
           addUser,
           setUsersData
         }} 
       />
-      {
-        usersData.isLoading
-        ? (
-          <div class="d-flex align-items-center">
-            <strong>Loading...</strong>
-            <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+      <div className="container card mt-2">
+        <div className="row">
+          <div className="col-md-3 pt-3">
+            <UserList
+              users={usersData.data}
+              delCallback={delUser}
+            />
           </div>
-        ) : null
-      }
-      <CompareBarDiagram
-        usersData={usersData}
-      />
+          <div className="col-md-9 pt-3">
+            {
+              usersData.isLoading
+              ? (
+                <div class="d-flex align-items-center">
+                  <strong>Loading...</strong>
+                  <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+                </div>
+              )
+              : <CompareBarDiagram usersData={usersData} />
+            }
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
