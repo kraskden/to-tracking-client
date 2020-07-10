@@ -20,7 +20,7 @@ export default class ProfileAcc extends Component {
                   <div className='col' style={{textAlign: "center"}}>
                     <button
                       type="button"
-                      class="btn btn-primary mt-4"
+                      className="btn btn-primary mt-4"
                       data-toggle="modal"
                       data-target="#AddAccountModal"
                     >
@@ -30,14 +30,14 @@ export default class ProfileAcc extends Component {
                 </div>
           
                 <div
-                  class="modal fade"
+                  className="modal fade"
                   id="AddAccountModal"
                   tabindex="-1"
                   role="dialog"
                   aria-labelledby="AddAccountModalLabel"
                   aria-hidden="true"
                 >
-                  <div class="modal-dialog" role="document">
+                  <div className="modal-dialog" role="document">
                     <AddAccountForm onProfile={this.props.onProfile} />
                   </div>
                 </div>

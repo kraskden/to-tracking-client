@@ -32,21 +32,43 @@ export default class SwitchDiagram extends Component {
         let btnPeriod = this.props.periods.map((el, idx) => {
             let str = idx === 0 ? "active" : ""
             return (
-                <label className={`btn btn-secondary ${str} `} key={el.id}>
-                    <input type="radio" onClick={this.handlePeriodChange} name="options" id={el.id} checked/> {el.name ? el.name : el.id}
+                <label
+                    className={`btn btn-secondary ${str} `}
+                    key={el.id}
+                >
+                    <input
+                        type="radio"
+                        onClick={this.handlePeriodChange}
+                        name="options" id={el.id}
+                        defaultChecked
+                    />
+                    {el.name ? el.name : el.id}
                 </label>
             )
         })
         let btnType = this.props.types.map((el, idx) => {
             let str = idx === 0 ? "active" : ""
             return (
-                <label className={`btn btn-secondary ${str}`} key={el.id}>
-                    <input type="radio" onClick={this.handleStateChange} name="options" id={el.id} checked/> {el.name ? el.name : el.id}
+                <label
+                    className={`btn btn-secondary ${str}`}
+                    key={el.id}
+                >
+                    <input
+                        type="radio"
+                        onClick={this.handleStateChange}
+                        name="options" id={el.id}
+                        defaultChecked
+                    />
+                    {el.name ? el.name : el.id}
                 </label>
             )
         })
-        let periodHolder = btnPeriod.length > 1 ? <div className="btn-group btn-group-toggle" data-toggle="buttons">{btnPeriod}</div> : <div></div>
-        let typesHolder = btnType.length > 1 ? <div className="btn-group btn-group-toggle" data-toggle="buttons">{btnType}</div> : <div></div>
+        let periodHolder = btnPeriod.length > 1
+            ? <div className="btn-group btn-group-toggle" data-toggle="buttons">{btnPeriod}</div>
+            : <div></div>
+        let typesHolder = btnType.length > 1
+            ? <div className="btn-group btn-group-toggle" data-toggle="buttons">{btnType}</div>
+            : <div></div>
         return (
             <div>
                 <div className="row justify-content-start ml-3 mb-2">
@@ -59,12 +81,21 @@ export default class SwitchDiagram extends Component {
                 </div>
                 <div className="row" >
                     <div className="col-12">
-                        {React.createElement(this.props.graph, {data: this.props.data[this.state.period], period: this.state.period, height: this.props.height, x: this.props.x, y: this.state.type})}
+                        {
+                            React.createElement(
+                                this.props.graph,
+                                {
+                                    data: this.props.data[this.state.period],
+                                    period: this.state.period,
+                                    height: this.props.height,
+                                    x: this.props.x,
+                                    y: this.state.type
+                                }
+                            )
+                        }
                     </div>
                 </div>
             </div>
-            
-
         )
     }
 }

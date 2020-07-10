@@ -49,15 +49,31 @@ export default class Dropdown extends Component {
             return (
                 // Line 50:112:  Script URL is a form of eval  no-script-url
                 // eslint-disable-next-line no-script-url
-                <button class="dropdown-item" id={val.id} key={val.id} onClick={() => this.onChange(val)} href="javascript:;">{val.name}</button>
+                <button
+                    className="dropdown-item"
+                    id={val.id}
+                    key={val.id}
+                    onClick={() => this.onChange(val)}
+                    // href="javascript:;"
+                >{val.name}</button>
             )
         })
         return (
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div className="dropdown">
+                <button
+                    className="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                >
                     {this.state.value ? this.state.value.name : "No such data"} 
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div
+                    className="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton"
+                >
                     {items}
                 </div>
             </div>    

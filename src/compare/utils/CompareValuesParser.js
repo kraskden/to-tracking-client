@@ -1,46 +1,77 @@
 export default {
   parseTime(users) {
     const getHours = time => Math.floor(time / 60 / 60)
-    let data = []
-  
-    users.forEach(user => {
-      const entry = {
+
+    const data = users.map(user => ({
+      name: user.login,
+      Time: getHours(user.tracking[0].time)    
+    }))
+
+    return data
+  },
+
+  parseNumber(numKey, key, users) {
+    const data = users.map(user => {
+      const number = user.tracking[0][key]
+
+      return {
         name: user.login,
-        Time: getHours(user.tracking[0].time)
+        [numKey]: number
       }
-      data.push(entry)
     })
-    return (data)
+
+    return data
   },
 
-  parseNumber(name, key, users) {
-    let data = []
-  
-    users.forEach(user => {
-        const number = user.tracking[0][key]
-  
-        const entry = {
-          name: user.login,
-          [name]: number
-        }
-        data.push(entry)
-    })
-    return(data)
-  },
-
-  parseRatio(name, dividend, divider, users) {
-    let data = []
-    
-    users.forEach(user => {
+  parseRatio(ratioKey, dividend, divider, users) {
+    const data = users.map(user => {
       const tracking = user.tracking[0]
       const ratio = tracking[dividend] / tracking[divider]
-  
-      const entry = {
+
+      return {
         name: user.login,
-        [name]: ratio
+        [ratioKey]: ratio
       }
-      data.push(entry)
     })
-    return(data)
+
+    return data
+  },
+
+  parseTimeFor(user) {
+    const getHours = time => roundNum(time / 60 / 60)
+
+    return {
+      name: user.login,
+      "Hours played": getHours(user.tracking[0].time)  
+    }
+  },
+
+  parseNumFor(user, numKey, dataKey) {
+    const number = user.tracking[0][dataKey]
+
+    return {
+      name: user.login,
+      [numKey]: number
+    }
+  },
+
+  parseRatioFor(user, ratioKey, dividend, divider) {
+    const tracking = user.tracking[0]
+    const ratio = tracking[dividend] / tracking[divider]
+    const rounded = roundNum(ratio)
+
+    return {
+      name: user.login,
+      [ratioKey]: rounded
+    }
+  },
+
+}
+
+function roundNum(num) {
+  if (num !== 0) {
+    return Math.round((num + Number.EPSILON) * 100) / 100
+  } else {
+    return 0
   }
 }

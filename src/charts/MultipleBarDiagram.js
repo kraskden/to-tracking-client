@@ -1,6 +1,4 @@
-import React, {
-  Fragment
-} from 'react';
+import React from 'react';
 import {
   BarChart,
   Bar,
@@ -11,12 +9,12 @@ import {
 } from 'recharts';
 
 
-export default function MultipleBarDiagram(props) {
+export default function MultipleBarDiagram({diagramData}) {
   return (
     <>
       {
-        props.diagramData !== null
-        ? <Charts diagramData={props.diagramData} currentUser={props.currentUser} />
+        diagramData !== null
+        ? <Charts diagramData={diagramData} />
         : null
       }
     </>
@@ -24,21 +22,19 @@ export default function MultipleBarDiagram(props) {
 }
 
 function Charts({diagramData}) {
-  return diagramData.map(([dataKey, data], index) => {
+  return diagramData.map(({dataName, data}, index) => {
     const height = calcHeight(data.length)
     const sorted = [...data].sort((first, second) => {
-      if (first[dataKey] < second[dataKey]) {
+      if (first[dataName] < second[dataName]) {
         return 1
       }
-      if (first[dataKey] > second[dataKey]) {
+      if (first[dataName] > second[dataName]) {
         return -1
       }
         return 0
     })
 
     return (
-      <Fragment>
-        {/* <h4>{dataKey}</h4> */}
         <ResponsiveContainer
           width="100%"
           height={height}
@@ -51,16 +47,24 @@ function Charts({diagramData}) {
             layout="vertical"
             margin={{top: 5, right: 70, left: 70, bottom: 5}}
           >
-            <XAxis type="number" />
-            <YAxis dataKey="name" type="category" />
+            <XAxis
+              type="number"
+              // unit=" u"
+              // name="name"
+            />
+            <YAxis
+              dataKey="name"
+              type="category"
+              // unit="u"
+              // name="name"
+            />
             <Tooltip />
             <Bar
-              dataKey={dataKey}
+              dataKey={dataName}
               fill={"#8884d8"}
             />
           </BarChart>
         </ResponsiveContainer>
-      </Fragment>
     )
   })
 }

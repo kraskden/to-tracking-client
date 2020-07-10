@@ -84,13 +84,27 @@ export default class DropdownDiagram extends Component {
         let btnPeriod = this.props.periods.map((el, idx) => {
             let str = idx === 0 ? "active" : ""
             return (
-                <label className={`btn btn-secondary ${str} key=${el.id}`}>
-                    <input type="radio" onClick={this.handlePeriodChange} name="options" id={el.id} checked/> {el.name ? el.name : el.id}
+                <label
+                    className={`btn btn-secondary ${str}`}
+                    key={el.id}
+                >
+                    <input
+                        type="radio"
+                        onClick={this.handlePeriodChange}
+                        name="options" id={el.id}
+                        defaultChecked
+                    />
+                    {el.name ? el.name : el.id}
                 </label>
             )
         })
-        let periodHolder = btnPeriod.length > 1 ? <div class="btn-group btn-group-toggle" data-toggle="buttons">{btnPeriod}</div> : <div></div>
+        
+        let periodHolder = btnPeriod.length > 1
+            ? <div className="btn-group btn-group-toggle" data-toggle="buttons">{btnPeriod}</div>
+            : <div></div>
+
         let diagram = <div></div>
+
         if (this.state.element) {
             diagram = React.createElement(this.props.graph, {
                 data: this.getData(),

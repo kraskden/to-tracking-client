@@ -15,70 +15,55 @@ export default function CompareBarDiagram({usersData}) {
   useEffect(() => {
 
     const users = usersData.data
-    let diagramData = []
+    let newDiagramData = []
 
     if (users.length > 0) {
+      const {
+        Nums,
+        Ratios
+      } = CompareValuesGroups
 
-      /*
-      parse data for bar diagram
-      */
-  
-      CompareValuesGroups.SCGroup.forEach(
-        entry => {
-          const dataArray = CompareValuesParser.parseNumber(
-            entry.name, entry.key, users
-          )
-          diagramData.push([entry.name, dataArray])
-        }
-      )
-  
-      CompareValuesGroups.KDGroup.forEach(
-        entry => {
-          const dataArray = CompareValuesParser.parseNumber(
-            entry.name, entry.key, users
-          )
-          diagramData.push([entry.name, dataArray])
-        }
-      )
-  
-      CompareValuesGroups.RatioGroup.forEach(
-        entry => {
-          const dataArray = CompareValuesParser.parseRatio(
-            entry.name, entry.dividend, entry.divider, users
-          )
-          diagramData.push([entry.name, dataArray])
-        }
-      )
-  
-      const parsedTime = CompareValuesParser.parseTime(users)
-      diagramData.push(["Time", parsedTime])
-  
-  
-      /*
-      set diagramData
-      */
-  
-      setDiagramData(diagramData)
+      const {
+        parseNumFor,
+        parseRatioFor,
+        parseTimeFor
+      } = CompareValuesParser
+
+      // parse data for diagram
+
+      Nums.forEach(({name, key}) => {
+        const parsedArr = users.map(user => parseNumFor(user, name, key))
+        newDiagramData.push({
+          dataName: name,
+          data: parsedArr
+        })
+      })
+
+      Ratios.forEach(({name, dividend, divider}) => {
+        const parsedArr = users.map(user => parseRatioFor(user, name, dividend, divider))
+        newDiagramData.push({
+          dataName: name,
+          data: parsedArr
+        })
+      })
+
+      const parsedTime = users.map(user => parseTimeFor(user))
+      newDiagramData.push({
+        dataName: 'Hours played',
+        data: parsedTime
+      })
+
+      // set diagramData
+
+      setDiagramData(newDiagramData)
     } else {
       setDiagramData(null)
     }
-
-    /*
-    update selected data if usersData changed
-    */
-
-    if (selected && users.length > 0) {
-      const value = selected[0][0]
-      setSelected(diagramData.filter(data => data[0] === value))
-    }
-
-    // stringify to catch all changes in complex data structures
-    // eslint-disable-next-line
-  }, [JSON.stringify(usersData.data)])
+  }, [usersData.data])
 
 
   const onChange = value => {
-    setSelected(diagramData.filter(data => data[0] === value))
+    setSelected(diagramData.filter(data => data.dataName === value))
   }
 
   return (
@@ -87,7 +72,7 @@ export default function CompareBarDiagram({usersData}) {
         <div className="row">
           <h4 className="col-6 col-md-2">Chart</h4>
           <Dropdown
-            values={diagramData.map(entry => ({id: entry[0], name: entry[0]}))}
+            values={diagramData.map(({dataName}) => ({id: dataName, name: dataName}))}
             onChange={onChange}
             className="col-6 col-md-10"
           />

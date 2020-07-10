@@ -17,12 +17,12 @@ export default function AddAccountForm(props) {
 
   return (
     <form
-      class="modal-content"
+      className="modal-content"
       onSubmit={submitHandler}
     >
-    <div class="modal-header">
+    <div className="modal-header">
       <h5
-        class="modal-title"
+        className="modal-title"
         id="AddAccountModalLabel"
       >
         Add an account
@@ -30,14 +30,14 @@ export default function AddAccountForm(props) {
       <button
         id="btn-close"
         type="button"
-        class="close"
+        className="close"
         data-dismiss="modal"
         aria-label="Close"
       >
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <div class="modal-body">
+    <div className="modal-body">
       <div className='col justify-content-center'>
         <div className='form-group col-12'>
           <label for='loginInput'>Login</label>
@@ -61,17 +61,17 @@ export default function AddAccountForm(props) {
         </div>
       </div>
     </div>
-    <div class="modal-footer">
+    <div className="modal-footer">
       <button
         type="button"
-        class="btn btn-secondary"
+        className="btn btn-secondary"
         data-dismiss="modal"
       >
         Close
       </button>
       <button 
         type="submit"
-        class="btn btn-primary"
+        className="btn btn-primary"
       >
         Add
       </button>
