@@ -1,71 +1,63 @@
-export default {
-  parseTime(users) {
-    const getHours = time => Math.floor(time / 60 / 60)
+export function parseTime(users, dataName) {
+  const data = users.map(user => 
+    parseTimeFor(user, dataName)
+  )
 
-    const data = users.map(user => ({
-      name: user.login,
-      Time: getHours(user.tracking[0].time)    
-    }))
+  return {
+    dataName: dataName,
+    data: data
+  }
+}
 
-    return data
-  },
+export function parseNum(users, dataName, dataKey) {
+  const data = users.map(user => 
+    parseNumFor(user, dataName, dataKey)
+  )
 
-  parseNumber(numKey, key, users) {
-    const data = users.map(user => {
-      const number = user.tracking[0][key]
+  return {
+    dataName: dataName,
+    data: data
+  }
+}
 
-      return {
-        name: user.login,
-        [numKey]: number
-      }
-    })
+export function parseRatio(users, dataName, dividendKey, dividerKey) {
+  const data = users.map(user =>
+    parseRatioFor(user, dataName, dividendKey, dividerKey)
+  )
 
-    return data
-  },
+  return {
+    dataName: dataName,
+    data: data
+  }
+}
 
-  parseRatio(ratioKey, dividend, divider, users) {
-    const data = users.map(user => {
-      const tracking = user.tracking[0]
-      const ratio = tracking[dividend] / tracking[divider]
+export function parseTimeFor(user, dataName) {
+  const getHours = time => roundNum(time / 60 / 60)
 
-      return {
-        name: user.login,
-        [ratioKey]: ratio
-      }
-    })
+  return {
+    name: user.login,
+    [dataName]: getHours(user.tracking[0].time)  
+  }
+}
 
-    return data
-  },
+export function parseNumFor(user, dataName, dataKey) {
+  const number = user.tracking[0][dataKey]
 
-  parseTimeFor(user) {
-    const getHours = time => roundNum(time / 60 / 60)
+  return {
+    name: user.login,
+    [dataName]: number
+  }
+}
 
-    return {
-      name: user.login,
-      "Hours played": getHours(user.tracking[0].time)  
-    }
-  },
+export function parseRatioFor(user, dataName, dividend, divider) {
+  const tracking = user.tracking[0]
+  const ratio = tracking[dividend] / tracking[divider]
+  const rounded = roundNum(ratio)
 
-  parseNumFor(user, numKey, dataKey) {
-    const number = user.tracking[0][dataKey]
-
-    return {
-      name: user.login,
-      [numKey]: number
-    }
-  },
-
-  parseRatioFor(user, ratioKey, dividend, divider) {
-    const tracking = user.tracking[0]
-    const ratio = tracking[dividend] / tracking[divider]
-    const rounded = roundNum(ratio)
-
-    return {
-      name: user.login,
-      [ratioKey]: rounded
-    }
-  },
-
+  return {
+    name: user.login,
+    [dataName]: rounded
+  }
 }
 
 function roundNum(num) {

@@ -3,8 +3,15 @@ import React, {
   useEffect
 } from 'react'
 import MultipleBarDiagram from '../../charts/MultipleBarDiagram'
-import CompareValuesGroups from '../utils/CompareValuesGroups'
-import CompareValuesParser from '../utils/CompareValuesParser'
+import {
+  Nums,
+  Ratios
+} from '../utils/CompareValuesGroups'
+import {
+  parseNum,
+  parseRatio,
+  parseTime
+} from '../utils/CompareValuesParser'
 import Dropdown from '../../charts/controls/Dropdown'
 
 export default function CompareBarDiagram({usersData}) {
@@ -13,49 +20,18 @@ export default function CompareBarDiagram({usersData}) {
   const [selected, setSelected] = useState(null)
 
   useEffect(() => {
-
     const users = usersData.data
-    let newDiagramData = []
 
     if (users.length > 0) {
-      const {
-        Nums,
-        Ratios
-      } = CompareValuesGroups
+      const parsedNums = Nums.map(({name, key}) => 
+        parseNum(users, name, key)
+      )
+      const parsedRatios = Ratios.map(({name, dividend, divider}) => 
+        parseRatio(users, name, dividend, divider)
+      )
+      const parsedTime = parseTime(users, "Hours played")
 
-      const {
-        parseNumFor,
-        parseRatioFor,
-        parseTimeFor
-      } = CompareValuesParser
-
-      // parse data for diagram
-
-      Nums.forEach(({name, key}) => {
-        const parsedArr = users.map(user => parseNumFor(user, name, key))
-        newDiagramData.push({
-          dataName: name,
-          data: parsedArr
-        })
-      })
-
-      Ratios.forEach(({name, dividend, divider}) => {
-        const parsedArr = users.map(user => parseRatioFor(user, name, dividend, divider))
-        newDiagramData.push({
-          dataName: name,
-          data: parsedArr
-        })
-      })
-
-      const parsedTime = users.map(user => parseTimeFor(user))
-      newDiagramData.push({
-        dataName: 'Hours played',
-        data: parsedTime
-      })
-
-      // set diagramData
-
-      setDiagramData(newDiagramData)
+      setDiagramData([...parsedNums, ...parsedRatios, parsedTime])
     } else {
       setDiagramData(null)
     }
