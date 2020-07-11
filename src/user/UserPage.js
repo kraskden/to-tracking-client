@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+// import { Switch, useRouteMatch, Route } from 'react-router-dom'
 
 // pages
 import UserHome from './UserHome'
@@ -11,6 +12,7 @@ import TrackApi from '../net/TrackApi'
 import DataContext from './components/DataContext'
 import UserBox from './components/UserBox'
 import SubButton from './components/SubButton'
+import Tabs from './components/Tabs'
 
 
 export default class UserPage extends Component {
@@ -74,6 +76,24 @@ export default class UserPage extends Component {
             default: 
                 return <div></div>
         }
+        // let match = useRouteMatch()
+
+        // return(
+        //     <Switch>
+        //         <Route path={match.path}>
+        //             <UserHome />
+        //         </Route>
+        //         <Route path={`${match.path}/summary`}>
+        //             <UserSummary />
+        //         </Route>
+        //         <Route path={`${match.path}/monitoring`}>
+        //             <UserMonitoring />
+        //         </Route>
+        //         <Route path={`${match.path}/compare`}>
+        //             <Compare />
+        //         </Route>
+        //     </Switch>
+        // )
     }
 
 
@@ -107,20 +127,7 @@ export default class UserPage extends Component {
                     </div>
                     <div className="row align-items-center">
                         <div className="col">
-                            <ul className="nav nav-tabs mt-2" id="myTab" role="tablist">
-                                <li className="nav-item">
-                                    <button className="nav-link active" data-toggle="tab" role="tab" aria-selected="true" onClick={() => this.onTabChange("home")}>Home</button>
-                                </li>
-                                <li className="nav-item">
-                                    <button className="nav-link" data-toggle="tab" role="tab" aria-selected="false" onClick={() => this.onTabChange("summary")}>Summary</button>
-                                </li>
-                                <li className="nav-item">
-                                    <button className="nav-link"  data-toggle="tab" role="tab" aria-selected="false" onClick={() => this.onTabChange("monitoring")}>Monitoring</button>
-                                </li>
-                                <li className="nav-item">
-                                    <button className="nav-link"  data-toggle="tab" role="tab" aria-selected="false" onClick={() => this.onTabChange("compare")}>Compare</button>
-                                </li>
-                          </ul>
+                            <Tabs onTabChange={this.onTabChange.bind(this)} />
                         </div>
                         <SubButton profileData={this.props.profileData} login={this.state.data.login} onProfile={this.props.onProfile}/>
                         
