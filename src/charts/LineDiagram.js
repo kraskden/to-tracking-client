@@ -13,12 +13,13 @@ export default class LineDiagram extends Component {
     
     transformData() {
         this.data = this.props.data.slice(0)
+        console.log(this.data)
         this.data = this.data.map((el) => {
             let ret = {}
             ret[this.props.x] = el[this.props.x]
             ret[this.props.y] = el[this.props.y] ? el[this.props.y] : 0;
             if (this.props.y === "time") {
-                ret[this.props.y] = (ret[this.props.y] / 3600).toFixed(1)
+                ret[this.props.y] = +(ret[this.props.y] / 3600).toFixed(1)
             }
             if (this.props.x === "timestamp") {
                 let date = new Date(el[this.props.x])
