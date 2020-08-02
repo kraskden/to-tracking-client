@@ -48,6 +48,7 @@ export default function CompareBarDiagram({usersData}) {
         <div className="row">
           <h4 className="col-6 col-md-2">Chart</h4>
           <Dropdown
+            value={selected ? {id: selected.dataName, name: selected.dataName} : null}
             values={diagramData.map(({dataName}) => ({id: dataName, name: dataName}))}
             onChange={onChange}
             className="col-6 col-md-10"

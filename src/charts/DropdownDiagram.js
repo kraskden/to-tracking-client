@@ -26,7 +26,6 @@ export default class DropdownDiagram extends Component {
         if (prevProps.data.login !== this.props.data.login) {
             this.updateElements()
         } else {
-            console.log("!!!!")
         }
     }
 
@@ -57,7 +56,6 @@ export default class DropdownDiagram extends Component {
                 elements.add(activity.name)
             }
         }
-        console.log(elements.values().next().value)
         this.setState({
             elements: [...elements.values()],
             element: elements.values().next().value
@@ -65,7 +63,6 @@ export default class DropdownDiagram extends Component {
     }
 
     getData = () => {
-        console.log("Get data")
         let data = this.props.data[this.state.period]
         data.forEach((row) => {
             let activity =  row.activities.filter((el) => el.name === this.state.element)[0]

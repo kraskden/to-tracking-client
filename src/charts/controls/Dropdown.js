@@ -5,10 +5,10 @@ export default class Dropdown extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            value: props.values[0]
+            value: props.value || props.values[0]
         }
         if (this.props.values[0])
-            this.props.onChange(this.props.values[0].id)
+            this.props.onChange(this.props.value ? this.props.value.id : this.props.values[0].id)
     }
 
     // compare by key
@@ -26,14 +26,16 @@ export default class Dropdown extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.values !== this.props.values) {
+
             if (this.compareArrays(this.props.values, prevProps.values, 'id')) {
                 return 
             }
             this.setState({
-                value: this.props.values[0]
+                value: this.props.value || this.props.values[0]
             })
-            if (this.props.values[0])
-                this.props.onChange(this.props.values[0].id)
+            if (this.props.values[0]) {
+                this.props.onChange(this.props.value ? this.props.value.id : this.props.values[0].id)
+            }
         }
     }
 

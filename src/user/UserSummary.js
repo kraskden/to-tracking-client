@@ -24,7 +24,7 @@ export default class UserSummary extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            period: 'weekly'
+            period: 'currWeek'
         }
     }
 
@@ -37,21 +37,28 @@ export default class UserSummary extends Component {
     render() {
         // Be careful when change order of {'monthly', 'weekly'}
         let tracking = this.context[this.state.period]
-        let lastTracking = tracking[tracking.length - 1] || {activities: []}
-
+        let lastTracking;
+        if (this.state.period.indexOf("curr") !== -1) {
+            lastTracking = tracking ? tracking : {activities: [], supplies: []}
+        } else {
+            lastTracking = tracking[tracking.length - 1] || {activities: [], supplies: []}
+        }
+        
         let itemActivity = {}
+        let isEmptyActivity = true;
         for (const item of ['Hull', 'Turret', 'Mode', 'Module']) {
-            itemActivity[item] = BarParser.parseActivity(lastTracking.activities, item)
+            let activity =  BarParser.parseActivity(lastTracking.activities, item).sort((a, b) => b.time - a.time)
+            isEmptyActivity &= activity.length === 0;
+            itemActivity[item] = activity
         }
 
-        console.log(itemActivity)
-
-        let objs = SummaryParser.makePeriodSummary(tracking[tracking.length - 1])
+        let objs = SummaryParser.makePeriodSummary(lastTracking)
         return (
             <div>
                 <div className="pt-3">
                     <Switch 
-                        switches={[{id: 'weekly', name: 'Last week'}, {id: 'monthly', name: 'Last month'},  {id: 'daily', name: 'Last day'}]}
+                        switches={[{id: 'currWeek', name: 'Curr week'}, {id: 'weekly', name: 'Prev week'},
+                          {id: 'currMonth', name: 'Curr month'}, {id: 'monthly', name: 'Prev month'}, ]}
                         onChange={this.onPeriodChange}
                     />
                 </div>
@@ -60,6 +67,7 @@ export default class UserSummary extends Component {
                         <SummaryTable objs={objs} />
                     </div>
                 </div>
+                {isEmptyActivity ? <></> :
                 <div className="card mt-2">
                     <div className="card-body pb-0">
                         <div className="row">
@@ -79,7 +87,7 @@ export default class UserSummary extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>}
             </div>
         )
     }

@@ -25,9 +25,9 @@ export default class AccCard extends Component {
     }
 
     fetchSummary = () => {
-        TrackApi.getLastTrack(this.props.user, "weekly").then((res) => {
+        TrackApi.getCurrTrack(this.props.user).then((res) => {
             this.setState({
-                summary: SummaryParser.makeShortSummary(res["weekly"][0])
+                summary: SummaryParser.makeShortSummary(res["currWeek"])
             })
         }).catch((err) => {
             console.log(err)

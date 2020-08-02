@@ -113,5 +113,21 @@ AuthApi.addAccount = async (login, invite) => {
     }
 }
 
+AuthApi.authGetReq = async (uri) => {
+    let token = localStorage.getItem('RTG_JWT')
+    let res = await fetch(`${serverUrl}${uri}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    if (res.status !== 200 ) {
+        return Promise.reject()
+    } else {
+        return res.text()
+    }
+}
+
 
 export default AuthApi

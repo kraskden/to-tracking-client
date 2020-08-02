@@ -6,6 +6,8 @@ TrackApi.getAllTrack = async (user) => await fetchData(`${serverUrl}/user/${user
 
 TrackApi.getLastTrack = async (user, period) => await fetchData(`${serverUrl}/user/${user}/lastTrack?period=${period}`)
 
+TrackApi.getCurrTrack = async (user) => await fetchData(`${serverUrl}/user/${user}/currTrack`)
+
 async function fetchData(url) {
     let res = await fetch(url)
     if (res.ok) {

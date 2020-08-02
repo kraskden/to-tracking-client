@@ -9,7 +9,6 @@ import LoginPage from './profile/LoginPage'
 import TrackPage from './user/TrackPage';
 import LogoutPage from './profile/LogoutPage';
 import AuthApi from './net/AuthApi';
-import AdminPage from './profile/AdminPage';
 import ProfilePage from './profile/ProfilePage';
 import Home from './Home';
   
@@ -28,11 +27,13 @@ export default class App extends Component {
     }
 
     onProfileChange = () => {
+        console.log("On change")
         AuthApi.getUserInfo().then((info) => {
             this.setState({
                 profileData: info
             })
         }, (err) => {
+            console.log(err)
             this.setState({
                 profileData: null
             })
@@ -49,7 +50,6 @@ export default class App extends Component {
                         <TrackPage user='Fizzika' profileData={this.state.profileData} onProfile={this.onProfileChange}/>
                     </Route> */}
                     <Route path="/user/:user" children={(props) => {
-                        console.log(props.match.params.user)
                         return <TrackPage user={props.match.params.user} profileData={this.state.profileData} onProfile={this.onProfileChange} />}
                     } />
                         
@@ -57,9 +57,6 @@ export default class App extends Component {
                     <Route exact path="/login" children={(props) => <LoginPage history={props.history} onProfile={this.onProfileChange}/>} />
                     <Route exact path="/logout">
                         <LogoutPage onProfile={this.onProfileChange}/>
-                    </Route>
-                    <Route exact path="/admin">
-                        <AdminPage />
                     </Route>
                     <Route exact path="/profile" children={ (props) =>
                         <ProfilePage profileData={this.state.profileData} history={props.history} onProfile={this.onProfileChange} />} />                        

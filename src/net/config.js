@@ -1,3 +1,3 @@
-const serverUrl = process.env.API_URL || "https://to-rank-api.herokuapp.com"
+const serverUrl = process.env.API_URL || "http://localhost:4000"
 
 export default serverUrl

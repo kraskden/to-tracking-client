@@ -13,7 +13,6 @@ export default class LineDiagram extends Component {
     
     transformData() {
         this.data = this.props.data.slice(0)
-        console.log(this.data)
         this.data = this.data.map((el) => {
             let ret = {}
             ret[this.props.x] = el[this.props.x]
