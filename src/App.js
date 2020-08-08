@@ -11,6 +11,7 @@ import LogoutPage from './profile/LogoutPage';
 import AuthApi from './net/AuthApi';
 import ProfilePage from './profile/ProfilePage';
 import Home from './Home';
+import OnlinePage from './online/OnlinePage';
   
 
 export default class App extends Component {
@@ -59,7 +60,10 @@ export default class App extends Component {
                         <LogoutPage onProfile={this.onProfileChange}/>
                     </Route>
                     <Route exact path="/profile" children={ (props) =>
-                        <ProfilePage profileData={this.state.profileData} history={props.history} onProfile={this.onProfileChange} />} />                        
+                        <ProfilePage profileData={this.state.profileData} history={props.history} onProfile={this.onProfileChange} />} />  
+
+                    <Route exact path="/online" children={(props) => 
+                      <OnlinePage user={this.state.user} />} />                      
                 </Switch>
             </Router>
 

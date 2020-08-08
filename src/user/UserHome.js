@@ -48,7 +48,7 @@ export default class UserHome extends Component {
                         <SwitchDiagram graph={LineDiagram} x='timestamp' height={300} 
                             data={data} 
                             periods={[{id: 'daily', name: 'Daily'}, {id: 'weekly', name: 'Weekly'}, {id: 'monthly', name: 'Monthly'}]} 
-                            types={[{id: 'cry', name: 'Crystalls'}, {id: 'score', name: 'Score'}, {id: 'time', name: 'Time'}]}/>
+                            types={[{id: 'time', name: 'Time'}, {id: 'score', name: 'Score'}, {id: 'cry', name: 'Crystalls'}, ]}/>
                     </div>
                 </div>
             </div>
