@@ -72,7 +72,7 @@ export default class SwitchDiagram extends Component {
         return (
             <div>
                 <div className="row justify-content-start ml-3 mb-2">
-                    <div className="col-md-auto">
+                    <div className="col-md-auto my-md-0 my-2">
                         {periodHolder}
                     </div>
                     <div className="col-md-auto">

@@ -21,7 +21,8 @@ OnlineApi.getMomentaryOnline = async () => {
 }
 
 OnlineApi.getPcu = async (days) => {
-  let res = await fetch(`${API_URL}/pcu?days=${days}`)
+  let url = days ? `${API_URL}/pcu?days=${days}` : `${API_URL}/pcu`
+  let res = await fetch(url)
   if (res.status !== 200)
     return Promise.reject()
   return await res.json()

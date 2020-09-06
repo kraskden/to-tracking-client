@@ -1,11 +1,9 @@
-import React, { Component } from 'react'
-// import { Switch, useRouteMatch, Route } from 'react-router-dom'
+import React, { Component, lazy, Suspense } from 'react'
 
 // pages
 import UserHome from './UserHome'
 import UserSummary from './UserSummary'
-import UserMonitoring from './UserMonitoring'
-import Compare from '../compare/Compare'
+
 
 // components
 import TrackApi from '../net/TrackApi'
@@ -13,6 +11,11 @@ import DataContext from './components/DataContext'
 import UserBox from './components/UserBox'
 import SubButton from './components/SubButton'
 import Tabs from './components/Tabs'
+
+// lazy load
+const UserMonitoring = lazy(() => import('./UserMonitoring')) 
+const Compare = lazy(() => import('../compare/Compare')) 
+
 
 
 export default class UserPage extends Component {
@@ -70,30 +73,20 @@ export default class UserPage extends Component {
             case "summary":
                 return <UserSummary />
             case "monitoring":
-                return <UserMonitoring />
+                return (
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <UserMonitoring />
+                  </Suspense>
+                )
             case "compare":
-                return <Compare />
+              return (
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Compare />
+                </Suspense>
+              )
             default: 
                 return <div></div>
         }
-        // let match = useRouteMatch()
-
-        // return(
-        //     <Switch>
-        //         <Route path={match.path}>
-        //             <UserHome />
-        //         </Route>
-        //         <Route path={`${match.path}/summary`}>
-        //             <UserSummary />
-        //         </Route>
-        //         <Route path={`${match.path}/monitoring`}>
-        //             <UserMonitoring />
-        //         </Route>
-        //         <Route path={`${match.path}/compare`}>
-        //             <Compare />
-        //         </Route>
-        //     </Switch>
-        // )
     }
 
 

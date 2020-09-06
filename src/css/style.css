@@ -18,3 +18,12 @@
 .span-hover:hover {
     cursor: pointer;
 }
+
+.faq > p {
+  max-width: 80%;
+  margin-bottom: 0.5rem;
+}
+
+.react-bootstrap-table table {
+  table-layout: auto;
+}

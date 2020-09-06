@@ -1,17 +1,22 @@
-import React, { Component } from 'react'
+import React, { Component, lazy, Suspense } from 'react'
 import {
     BrowserRouter as Router,
     Switch,
     Route,
 } from "react-router-dom";
-import RegPage from './profile/RegPage';
-import LoginPage from './profile/LoginPage'
-import TrackPage from './user/TrackPage';
-import LogoutPage from './profile/LogoutPage';
-import AuthApi from './net/AuthApi';
-import ProfilePage from './profile/ProfilePage';
+
 import Home from './Home';
-import OnlinePage from './online/OnlinePage';
+import TrackPage from './user/TrackPage';
+import AuthApi from './net/AuthApi';
+import FaqPage from './common/FaqPage';
+
+
+const RegPage = lazy(() => import('./profile/RegPage'))
+
+const LoginPage = lazy(() => import('./profile/LoginPage'))
+const LogoutPage = lazy(() =>  import('./profile/LogoutPage'))
+const ProfilePage = lazy(() => import('./profile/ProfilePage'));
+const OnlinePage = lazy(() => import('./online/OnlinePage'));
   
 
 export default class App extends Component {
@@ -43,6 +48,7 @@ export default class App extends Component {
     
     render() {
         return (
+          <Suspense fallback={<div>Loading...</div>}>
             <Router>
                 <Switch>
                     <Route exact path="/" children={(props) => 
@@ -63,9 +69,14 @@ export default class App extends Component {
                         <ProfilePage profileData={this.state.profileData} history={props.history} onProfile={this.onProfileChange} />} />  
 
                     <Route exact path="/online" children={(props) => 
-                      <OnlinePage user={this.state.user} />} />                      
+                      <OnlinePage user={this.state.user} />} />    
+
+                    <Route exact path="/faq">
+                      <FaqPage user={this.state.user} />
+                    </Route>                  
                 </Switch>
             </Router>
+            </Suspense>
 
         )
     }

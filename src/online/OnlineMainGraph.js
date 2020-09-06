@@ -10,7 +10,7 @@ import { Tool } from 'react-feather';
 function CustomizedTick(props) {
   const { x, y, payload, middles } = props;
   let date = new Date(payload.value)
-  let formatedDate = moment(date).tz('Europe/Moscow').format('ll')
+  let formatedDate = moment(date).tz('Europe/Moscow').format('D/M')
   if (middles.has(payload.index)) {
     return (
       <g transform={`translate(${x},${y})`}>
@@ -37,7 +37,7 @@ export default function OnlineMainGraph(props) {
 
 
   function loadData()  {
-    const GRAPH_DAYS = 5;
+    const GRAPH_DAYS = 3;
     
     OnlineApi.getTrack(GRAPH_DAYS).then((res) => {
       let arrays = res.days.map(e => e.track)
@@ -77,7 +77,7 @@ export default function OnlineMainGraph(props) {
       <LineChart data={data}>
         <Line type='monotone' dataKey='online' stroke='#3a3af9' dot={false} />
         <XAxis dataKey='timestamp' tickLine={false} interval={0} tick={<CustomizedTick middles={middles}/>} />
-        <YAxis dataKey='online' domain={[0, 'dataMax']} />
+        <YAxis dataKey='online' scale="linear" domain={[0, 'dataMax']} />
         <CartesianGrid vertical={false}/>
         <Tooltip labelFormatter={(label) => moment(label).tz('Europe/Minsk').format('llll')}/>
         {begins.map((x, idx) => <ReferenceLine key={idx} x={x} />)}

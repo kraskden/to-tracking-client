@@ -116,10 +116,10 @@ export default class DropdownDiagram extends Component {
                     <div className="col-md-auto">
                         {periodHolder}
                     </div>
-                    <div className="col-md-auto pl-0">
+                    <div className="col-md-auto pl-md-0 my-2 my-md-0">
                         <Dropdown values={this.props.types} onChange={this.handleStateChange}/>                        
                     </div>
-                    <div className="col-md-auto pl-0">
+                    <div className="col-md-auto pl-md-0">
                         <Dropdown 
                         values={this.state.elements.map((elem) => {return {id: elem, name: elem}})} 
                         onChange={this.handleElemChange}/>     

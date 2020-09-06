@@ -28,13 +28,13 @@ export default class UserHome extends Component {
                     <div className="card-body pb-0">
                         <SummaryTable objs={SummaryParser.makeHomeSummary(summData)} />
                         <div className="row justify-content-center">
-                            <div className="col-lg-3 col-md-4">
+                            <div className="col-lg-3 col-md-4 col-sm-6 col-12">
                                 <PieDiagram data={turretPieData}/>
                             </div>
-                            <div className="col-lg-3 col-md-4">
+                            <div className="col-lg-3 col-md-4 col-sm-6">
                                 <PieDiagram data={hullPieData}/>
                             </div>
-                            <div className="col-lg-3 col-md-4">
+                            <div className="col-lg-3 col-md-4 col-sm-6 col-12">
                                 <PieDiagram data={modePieData}/>
                             </div>
                         </div>               
