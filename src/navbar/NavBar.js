@@ -25,14 +25,6 @@ function DropdownItem(props) {
   } else {
     return (
       <>
-        <a className="nav-link dropdown-toggle" href="/#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Action
-                </a>
-        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a className="dropdown-item" href="/login">Login</a>
-          <a className="dropdown-item" href="/signup">Register</a>
-        </div>
-
       </>
     )
   }

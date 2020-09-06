@@ -142,7 +142,7 @@ Util.getRankFromNumber = (number) => {
   if (idx < ranks.length) {
     return ranks[idx].rank
   }
-  return "Легенда " + (number - ranks.length + 2); 
+  return "Легенда " + (number - ranks.length + 1); 
 }
 
 Util.getPercent = (score) => {
