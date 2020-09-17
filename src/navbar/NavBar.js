@@ -33,13 +33,16 @@ function DropdownItem(props) {
 function MakeDropdown(props) {
   return (
     <ul className="navbar-nav ml-auto">
-      <li className="nav-item px-lg-4">
+      <li className="nav-item px-lg-3 d-none d-xl-block">
+        <a href="https://tankionline.com" className="nav-link font-weight-bold">Tanki Online</a>
+      </li>
+      <li className="nav-item px-lg-3">
         <Link to="/" className="nav-link font-weight-bold">Ratings</Link>
       </li>
-      <li className="nav-item px-lg-4">
+      <li className="nav-item px-lg-3">
         <Link to="/faq" className="nav-link font-weight-bold">FAQ</Link>
       </li>
-      <li className="nav-item px-lg-4">
+      <li className="nav-item px-lg-3">
         <Link to="/online" className="nav-link font-weight-bold">OnlineHub</Link>
       </li>
       <li className="nav-item dropdown">

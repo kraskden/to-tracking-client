@@ -7,20 +7,22 @@ import FaqAlert from './common/FaqAlert'
 
 export default class Home extends Component {
 
-    onUserChange = (newUser) => {
-        this.props.history.push(`/user/${newUser}`)
-    }
+  onUserChange = (newUser) => {
+    this.props.history.push(`/user/${newUser}`)
+  }
 
-    render() {
-        // if (this.props.profileData) {
-        //     return <Redirect to={`/user/${this.props.profileData.login}`} />
-        // }
-        return (
-            <div className="container">
-                <NavBar onUserChange={this.onUserChange} profileData={this.props.profileData} onProfile={this.props.onProfile} />
-                <FaqAlert />
-                <UserTable/>
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div className="container">
+        <NavBar onUserChange={this.onUserChange} profileData={this.props.profileData} onProfile={this.props.onProfile} />
+        <FaqAlert />
+        <UserTable />
+        <div className="d-block d-xl-none">
+          <div class="footer-copyright text-center mb-2">TankiRating — Fan site for  
+            <a href="https://tankionline.com/"> Tanki Online</a>
+          </div>
+        </div>
+      </div>
+    )
+  }
 }

@@ -70,7 +70,7 @@ function UserTable(props) {
 
 
   return (
-    <div className="mt-2 mb-5">
+    <div className="mt-2 mb-xl-5 mb-1">
       <ToolkitProvider keyField='login' columns={columns} data={users} bootstrap4={true} search={true}>
         {props => (
           <>
