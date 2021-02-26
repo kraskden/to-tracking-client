@@ -5,13 +5,13 @@ export default class Switch extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      id: this.props.switches[0].id
+      id: this.props.default || this.props.switches[0].id
     }
   }
 
   render() {
     let switches = this.props.switches.map((el, idx) => {
-      let cls = idx === 0 ? "active" : ""
+      let cls = idx === (this.props.defId || 0) ? "active" : ""
       return (
         <label
           className={`btn btn-secondary ${cls}`}

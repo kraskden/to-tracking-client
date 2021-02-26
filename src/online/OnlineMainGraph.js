@@ -32,14 +32,14 @@ export default function OnlineMainGraph(props) {
   const [begins, setBegins] = useState([])
 
   useEffect(() => {
-    loadData()
-  }, [])
+    if (props.graphId == "CCU") {
+      loadData()
+    }
+  }, [props.time, props.graphId])
 
 
-  function loadData()  {
-    const GRAPH_DAYS = 3;
-    
-    OnlineApi.getTrack(GRAPH_DAYS).then((res) => {
+  function loadData()  {    
+    OnlineApi.getTrack(props.time - 1).then((res) => {
       let arrays = res.days.map(e => e.track)
       // for (const day of res.days) {
       //   arrays.push(day.track)
@@ -75,7 +75,8 @@ export default function OnlineMainGraph(props) {
 
     <ResponsiveContainer width='100%' height={400}>
       <LineChart data={data}>
-        <Line type='monotone' dataKey='online' stroke='#3a3af9' dot={false} />
+        <Line type='monotone' dataKey='online' stroke='#3a3af9' dot={false} isAnimationActive={false}/>
+        <Line type='monotone' dataKey='inbattles' stroke='#ff0000' dot={false} isAnimationActive={false}/>
         <XAxis dataKey='timestamp' tickLine={false} interval={0} tick={<CustomizedTick middles={middles}/>} />
         <YAxis dataKey='online' scale="linear" domain={[0, 'dataMax']} />
         <CartesianGrid vertical={false}/>

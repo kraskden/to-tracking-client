@@ -11,8 +11,6 @@ OnlineApi.getMomentaryOnline = async () => {
   let obj = await res.json()
   let nodes = Object.values(obj.nodes)
 
-  console.log(nodes)
-
   return nodes.reduce((acc, curr) => {
     acc.online += curr.online
     acc.inbattles += curr.inbattles
@@ -20,8 +18,8 @@ OnlineApi.getMomentaryOnline = async () => {
   }, {online: 0, inbattles: 0})
 }
 
-OnlineApi.getPcu = async (days) => {
-  let url = days ? `${API_URL}/pcu?days=${days}` : `${API_URL}/pcu`
+OnlineApi.getDayStat = async (days) => {
+  let url = days ? `${API_URL}/dayStats?days=${days}` : `${API_URL}/dayStats`
   let res = await fetch(url)
   if (res.status !== 200)
     return Promise.reject()
