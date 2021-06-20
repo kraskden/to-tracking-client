@@ -61,8 +61,8 @@ timeStat.concat(timeCcu).forEach(i => {
 
 const graphs = [
   {id: "CCU", name: "CCU", time: timeCcu}, 
-  {id: "STAT_PCU+", name: "PCU", type:"pcu", start: 'dataMin - 1000', time: timeStat},
-  {id: "STAT_AVG+", name: "AVG", type:"avg", start: 'dataMin - 500', time: timeStat},
+  {id: "STAT_PCU+", name: "PCU", type:"pcu", start: 'dataMin - 5000', time: timeStat},
+  {id: "STAT_AVG+", name: "AVG", type:"avg", start: 'dataMin - 4000', time: timeStat},
 ]
 
 const zoom_switches = [

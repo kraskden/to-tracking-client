@@ -78,18 +78,27 @@ function UserTable(props) {
   useEffect(() => {
     AccountsApi.getAllAccounts().then((users) => {
       setUsers(users.map(user => {
+        if (user.login == "Jeffrie.Reguerro") {
+          console.log(user)
+        }
         user.weekly = user.weekly[0] || {};
         user.monthly = user.monthly[0] || {};
         ["weekly", "monthly", "currWeek", "currMonth"].forEach(prefix => {
           const entry = user[prefix] || {};
-          entry.kd = entry.deaths ? entry.kills / entry.deaths : -1;
-          entry.kt = entry.time ? entry.kills / (entry.time / 3600) : -1;
+          entry.kd = entry.deaths ? (entry.kills || 0) / entry.deaths : -1;
+          entry.kt = entry.time ? (entry.kills || 0) / (entry.time / (60 * 7)) : -1;
           user[prefix] = entry
         })
         return user;
       }))
     })
   }, [])
+
+  function onSortChange(e) {
+    setExtraColumnId(e.target.id)
+    setTimeout(() => document.querySelector("table th:nth-child(3)").click(), 
+      10);
+  }
 
 
   return (
@@ -99,8 +108,8 @@ function UserTable(props) {
           <>
             <div className="row mt-4">
               <div className="col">
-                <Switch switches={[{id: "kt", name: "Kills/Hour"}, {id: "time", name: "Hours"}, {id: "kd", name: "K/D"}]} 
-                  onChange={(e) => setExtraColumnId(e.target.id)} defId="kt" />
+                <Switch switches={[{id: "kt", name: "Kills/Battle"}, {id: "time", name: "Hours"}, {id: "kd", name: "K/D"}]} 
+                  onChange={onSortChange} defId="kt" />
 
               </div>
               <div className="col align-self-end justify-content-end">
@@ -111,7 +120,7 @@ function UserTable(props) {
               </div>
              
             </div>
-            <BootstrapTable defaultSorted={[{dataField: `currWeek.${extraColumnId}`, order: 'desc'}]}  wrapperClasses="table-responsive"
+            <BootstrapTable defaultSorted={[{dataField: `currWeek.kt`, order: 'desc'}]}  wrapperClasses="table-responsive"
              {...props.baseProps} striped pagination={paginationFactory({ sizePerPage: 20, showTotal: true })} />
           </>
         )}
